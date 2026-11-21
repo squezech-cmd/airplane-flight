@@ -24,8 +24,8 @@ git remote add deploy "$REPO"
 echo "==> Отправка ветки в main…"
 git push deploy HEAD:main
 
-echo "==> Отправка тега v1.0.0 (запускает сборку и Release)…"
-git push deploy v1.0.0
+echo "==> Отправка тегов (запускает сборку и Release)…"
+git push deploy --tags
 
 echo ""
 echo "Готово! Следите за сборкой: https://github.com/squezech-cmd/dear-passengers/actions"

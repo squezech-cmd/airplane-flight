@@ -42,12 +42,22 @@ jobs:
           buildsPath: builds
           buildMethod: DearPassengers.EditorTools.BuildScript.Build
 
+      # 3.5) One-click установщик «под ключ» (self-extracting exe):
+      #      один файл → распаковка в %LOCALAPPDATA%\DearPassengers → ярлыки → игра.
+      - name: Create one-click installer
+        run: |
+          pip install py7zr
+          cp installer/GameSetup.bat builds/
+          python3 installer/make_setup.py --mode game --payload builds --out DearPassengers_Setup.exe
+
       # 4) Артефакт (доступен на каждой сборке, даже без релиза).
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: DearPassengers-Windows-x64
-          path: builds/
+          path: |
+            builds/
+            DearPassengers_Setup.exe
 
       # 5) Релиз при пуше тега v*.
       - name: Zip for release
@@ -60,10 +70,14 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: DearPassengers-Windows-x64.zip
+          files: |
+            DearPassengers-Windows-x64.zip
+            DearPassengers_Setup.exe
           body: |
             Dear Passengers v${{ github.ref_name }} — Windows x64.
 
             ⚠️ 18+ | Создана в развлекательных целях. Не повторяйте в реальной жизни. Все совпадения случайны.
 
-            Установка: распакуйте архив, запустите DearPassengers.exe.
+            **Под ключ (как в Steam):** скачайте `DearPassengers_Setup.exe` — один файл, двойной клик,
+            игра ставится в %LOCALAPPDATA%\DearPassengers, ярлыки на рабочем столе и в «Пуске», запуск автоматический.
+            Альтернатива: `DearPassengers-Windows-x64.zip` — распакуйте и запустите DearPassengers.exe.

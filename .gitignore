@@ -35,4 +35,7 @@ crashlytics-build.properties
 .DS_Store
 Thumbs.db
 
+# Локальные инструменты сборки установщика (7z-модули, payload)
+.tools/
+
 # ВАЖНО: .meta-файлы Unity (Assets/**/*.meta) коммитим — они нужны для сборки!
