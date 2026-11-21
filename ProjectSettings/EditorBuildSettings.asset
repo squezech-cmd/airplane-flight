@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 27128606906950b88b095c654f6ad248
+  - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: c25532129a1b5c27af79dd97abe9fada
+  - enabled: 1
+    path: Assets/Scenes/Airplane.unity
+    guid: 1867ae706a0151eebd20672b4c913cd1
+  - enabled: 1
+    path: Assets/Scenes/Flight.unity
+    guid: a15452579e8d550d823e071f0930886a
