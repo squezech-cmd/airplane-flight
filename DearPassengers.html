@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Dear Passengers</title>
+<style>
+  html,body{margin:0;padding:0;background:#0b0d10;overflow:hidden;font-family:'Segoe UI',Arial,sans-serif;user-select:none}
+  #game{display:block;width:100vw;height:100vh}
+  .ol{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#eef1f4;z-index:10}
+  #menu{background:linear-gradient(160deg,#141821 0%,#1d2733 55%,#2b1a12 100%)}
+  #menu h1{font-size:64px;margin:0 0 6px;color:#f27321;letter-spacing:2px;text-shadow:0 4px 18px rgba(0,0,0,.6)}
+  #menu .sub{color:#9aa3ab;margin-bottom:26px;font-size:15px}
+  .btn{background:#f27321;color:#fff;border:0;font-size:20px;padding:14px 46px;margin:6px;cursor:pointer;border-radius:6px;font-family:inherit;font-weight:600}
+  .btn:hover{background:#ff8f47}
+  .btn.gray{background:#3a4149}
+  .disc{position:fixed;bottom:10px;left:0;right:0;text-align:center;color:#7c858d;font-size:12px;z-index:11}
+  #gate{background:rgba(8,10,13,.94)}
+  #gate .box{max-width:640px;background:#171b22;border:1px solid #2c333c;border-radius:12px;padding:34px 40px;text-align:center}
+  #gate h2{color:#f27321;margin:0 0 14px}
+  #gate p{color:#c7ccd1;line-height:1.55;font-size:15px}
+  #hud{position:fixed;left:14px;top:12px;color:#eef1f4;z-index:5;font-size:14px;line-height:1.5;text-shadow:0 1px 3px #000;pointer-events:none}
+  #hud b{color:#f27321}
+  #hudR{position:fixed;right:14px;top:12px;color:#eef1f4;z-index:5;text-align:right;font-size:14px;text-shadow:0 1px 3px #000;pointer-events:none}
+  .bar{width:190px;height:12px;background:rgba(0,0,0,.55);border-radius:6px;margin:3px 0 8px auto;overflow:hidden}
+  .bar>div{height:100%;border-radius:6px;transition:width .3s}
+  #subtitle{position:fixed;left:50%;transform:translateX(-50%);bottom:64px;color:#ffe8c2;font-size:17px;text-shadow:0 2px 4px #000;z-index:6;text-align:center;max-width:80vw;pointer-events:none}
+  #prompt{position:fixed;left:50%;transform:translateX(-50%);bottom:120px;color:#fff;font-size:16px;font-weight:600;text-shadow:0 2px 4px #000;z-index:6;pointer-events:none}
+  #warn{position:fixed;left:50%;transform:translateX(-50%);top:14%;color:#ff4b3a;font-size:26px;font-weight:700;text-shadow:0 2px 6px #000;z-index:6;display:none;pointer-events:none}
+  #pause{background:rgba(8,10,13,.82);display:none}
+  #results{background:rgba(8,10,13,.9);display:none}
+  #results h1{font-size:52px;margin:0 0 8px}
+  #results .stats{font-size:18px;color:#cdd3d9;line-height:1.9;margin:18px 0}
+  .keys{color:#8d969e;font-size:13px;margin-top:22px;line-height:1.7}
+  .keys b{color:#dfe4e8}
+  #refuel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:7;display:none}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud"></div>
+<div id="hudR"></div>
+<div id="prompt"></div>
+<div id="warn"></div>
+<div id="subtitle"></div>
+<canvas id="refuel" width="420" height="420"></canvas>
+
+<div id="gate" class="ol">
+  <div class="box">
+    <h2>⚠ 18+</h2>
+    <p>Игра содержит чёрный юмор, сцены выбрасывания пассажиров за борт, драки
+    и полное пренебрежение авиабезопасностью.<br><br>
+    <b>Создана в развлекательных целях. Не повторяйте в реальной жизни. Все совпадения случайны.</b></p>
+    <p style="font-size:13px;color:#8d969e">Фан-переиздание Dear Passengers (Steam, FLEXUS). Не связано с правообладателем.</p>
+    <button class="btn" id="gateYes">МНЕ 18+ — ЛЕТИМ</button>
+    <button class="btn gray" id="gateNo">Выйти</button>
+  </div>
+</div>
+
+<div id="menu" class="ol" style="display:none">
+  <h1>DEAR PASSENGERS</h1>
+  <div class="sub">худшая авиакомпания мира · рейс DP-18 · один файл, ноль установки</div>
+  <button class="btn" id="btnSolo">НАЧАТЬ РЕЙС</button>
+  <div class="keys">
+    <b>A/D</b> — ходить · <b>E</b> — действие (удерж. — схватить) · <b>F</b> — вода · <b>ЛКМ</b> — удар / выброс у двери<br>
+    Пилоту (E у штурвала): <b>↑/↓</b> — тангаж, <b>W/S</b> — тяга, <b>R</b> — встать · <b>Y</b> — взлёт · <b>Esc</b> — пауза
+  </div>
+</div>
+
+<div id="pause" class="ol">
+  <h1 style="color:#f27321">ПАУЗА</h1>
+  <button class="btn" id="btnResume">ПРОДОЛЖИТЬ</button>
+  <button class="btn gray" id="btnQuit">В МЕНЮ</button>
+</div>
+
+<div id="results" class="ol">
+  <h1 id="resTitle"></h1>
+  <div class="stats" id="resStats"></div>
+  <button class="btn" id="btnAgain">ЕЩЁ РЕЙС</button>
+  <button class="btn gray" id="btnMenu">В МЕНЮ</button>
+</div>
+
+<div class="disc">18+ | Создана в развлекательных целях. Не повторяйте в реальной жизни. Все совпадения случайны.</div>
+
+<script>
+'use strict';
+// ============================================================================
+// DEAR PASSENGERS — однофайловая браузерная версия (Canvas 2D, без зависимостей).
+// Открыть этот файл двойным кликом — и играть. Русский язык, 18+.
+// Архитектура: одна сетка состояния S, фазы рейса, стейт-машина пассажиров,
+// простая полётная модель, птицы, заправка в воздухе, выброс за борт.
+// ============================================================================
+
+const cv = document.getElementById('game'), ctx = cv.getContext('2d');
+const rfCv = document.getElementById('refuel'), rfCtx = rfCv.getContext('2d');
+const $ = id => document.getElementById(id);
+
+function fit(){ cv.width = innerWidth; cv.height = innerHeight; }
+addEventListener('resize', fit); fit();
+
+// ---------------- утилиты ----------------
+const rnd = (a,b)=>a+Math.random()*(b-a);
+const ri = (a,b)=>Math.floor(rnd(a,b+1));
+const clamp=(v,a,b)=>v<a?a:(v>b?b:v);
+const lerp=(a,b,t)=>a+(b-a)*t;
+// «шум» из синусов — замена Perlin
+function noise1(t){ return (Math.sin(t*1.7)+Math.sin(t*0.63+2.1)*0.6+Math.sin(t*2.9+4.2)*0.35)/1.95; }
+
+// ---------------- геометрия салона (мировые координаты) ----------------
+const CAB = {
+  x0: 60,        // нос (лобовое)
+  cockpit: 150,  // кресло пилота
+  door: 235,     // главная дверь
+  cabin0: 290,   // первый ряд
+  cabin1: 1010,  // последний ряд
+  galley: 1035,  // буфет с водой
+  cargo0: 1080,  // груз (вазы)
+  x1: 1230,      // хвост
+  floorY: 0,     // вычисляется от центра экрана
+  hatch: 660,    // люк на крыло (над 5-м рядом)
+};
+const SEATS = []; for(let i=0;i<12;i++){ SEATS.push({x: 300 + i*62, row: (i/6)|0}); }
+
+// ---------------- имена и реплики ----------------
+const NAMES = ['Тётя Люда','Геннадий (бизнес)','Студент Паша','Бабушка Зоя','Витя-кодер','Света с котом',
+               'Дядя Гриша','Мама с коляской','Турист Лёха','Молчун Борис','Инстаграм-Алиса','Капитан запаса Фёдор'];
+const BUBBLES = {
+  calm:  ['Всё нормально…','Хочу чаю.','Мы уже летим?','Куда багаж?','Тут тесновато…'],
+  panic: ['ААААА!!','МЫ ПАДАЕМ?!','ПОМОГИТЕ!!','Я ХОЧУ ВЫЙТИ!!','ГДЕ СПАСАТЕЛЬНЫЙ?!'],
+  aggr:  ['А ТЫ КТО ТАКОЙ?!','СУМКА МОЯ!!','ДА Я СЕЙЧАС!!','ВЕРНИ МЕСТО!','СНЯТЬ ЕГО ОТСЮДА!'],
+  calmed: ['О… спасибо…','Всё, всё, спокойно…','Даже хорошо стало…','Вода помогла!'],
+  drunk: ['Ещё соточку!','Я летаю красиво!','Братан, обнимемся?'],
+};
+
+// радио-объявления капитана
+const RADIO = {
+  welcome: ['Дорогие пассажиры! Приветствую на борту. Экипаж — это я, и я делаю всё.',
+            'Высота полёта — как получится, питание — по остаточному принципу.',
+            'Курить на борту нельзя. Вентиляция и так держится на честном слове.'],
+  turb:    ['Впереди небольшая тряска. Буквально чуть-чуть. Наверное.',
+            'Турбулентность — это не баг, это атмосфера проверяет ремни.',
+            'Капитан просил не паниковать. Сам капитан уже паникует.'],
+  bird:    ['В двигатель номер два залетела птица. Птице хуже, чем нам.',
+            'Мы столкнулись с пернатым. Объявляем минуту молчания по птице.'],
+  fire:    ['Небольшой пожар двигателя. Огнетушитель ищем, он где-то был.',
+            'Правый двигатель горит. Левый пока держится. Как и мы.'],
+  lowfuel: ['Топлива на донышке. Кто не заправился — вините себя. Летим к заправщику!',
+            'Бак почти пуст. Есть хорошая новость: земля ближе, чем кажется.'],
+  refuel:  ['Подходит самолёт-заправщик. Кто смелый — на крыло со шлангом!',
+            'Заправка в воздухе. Держите шланг крепче, второго не дадим.'],
+  refueled:['Бак полон! Шланг вернули. Почти целый.','Заправка завершена. Экипаж, выдыхайте.'],
+  paxout:  ['Один пассажир покинул борт. Через дверь. В полёте. 18+, как договаривались.',
+            'Пассажир вышел… проветриться. Вернуть его не представляется возможным.'],
+  fight:   ['В салоне драка. Уважаемые, это же эконом-класс, а не ринг!',
+            'Драка на борту. Бортпроводник уже идёт. Со стаканом воды.'],
+  landing: ['Начинаем снижение. Пристегнитесь — по возможности к креслам.',
+            'Идём на посадку. Аэропорт обещали. Который из двух — решаем по ветру.'],
+  crash:   ['…', 'Земля оказалась ближе, чем в расчётах. Извините.'],
+  landed:  ['Мы сели! Считайте это посадкой. Добро пожаловать обратно на землю!',
+            'Посадка выполнена. Аплодисменты принимаю я, жалобы — в письменно виде.'],
+  stall:   ['Самолёт сваливается! Тяни вверх!!','Мы падаем! Это не по плану!!'],
+};
+
+// ---------------- глобальное состояние ----------------
+let S = null;
+function newGame(){
+  S = {
+    phase: 'boarding',        // boarding|takeoff|flight|landing|landed|crashed
+    t: 0, time: 0,
+    // полёт
+    alt: 0, speed: 0, throttle: 0, pitch: 0, pitchTarget: 0,
+    fuel: 340, fuelCap: 400, dist: 90000,
+    turb: 0, turbPhase: 0, pocketT: 8, pocket: 0, stallWarn: 0,
+    eng: [100,100], fire: [false,false], fireT: [0,0], cracks: 0,
+    vases: 6, vasesBroken: 0,
+    // пассажиры
+    pax: [], paxSpawned: 0, spawnT: 0,
+    // птицы/частицы
+    birds: [], birdT: rnd(12,20), parts: [],
+    // заправка
+    refuelStage: 0,           // 0 нет | 1 летит | 2 качаем | 3 готово
+    tankerX: -600, marker: {x:0,y:0}, onWing: false,
+    // игрок
+    pl: { x: CAB.cockpit+40, dir: 1, water: false, carry: null, holdT: 0, punchCd: 0, piloting: false },
+    // статистика
+    st: { ejected:0, birdsEaten:0, refueled:0, fights:0 },
+    // радио
+    sub: '', subT: 0, radioCd: {},
+    doorOpen: false, pause: false, over: false,
+    cam: 0, camShake: 0,
+  };
+  for(let i=0;i<12;i++) S.pax.push({
+    id:i, name:NAMES[i], seat:i, x: CAB.door-60-i*24, y:0, state:'away', // away = ещё не сел
+    stress: rnd(5,20), hp: 100, pers: ri(0,3), bubble:'', bubT:0, knock:0, stand:false, vx:0, vy:0, rot:0,
+  });
+}
+
+// ---------------- звук (WebAudio-синтез) ----------------
+let AC = null, engOsc = null, engGain = null, muted = false;
+function audioInit(){
+  if (AC) return;
+  try{
+    AC = new (window.AudioContext||window.webkitAudioContext)();
+    engOsc = AC.createOscillator(); engGain = AC.createGain();
+    engOsc.type='sawtooth'; engOsc.frequency.value=40; engGain.gain.value=0;
+    const f = AC.createBiquadFilter(); f.type='lowpass'; f.frequency.value=220;
+    engOsc.connect(f); f.connect(engGain); engGain.connect(AC.destination); engOsc.start();
+  }catch(e){}
+}
+function beep(freq, dur, type, vol){
+  if(!AC || muted) return;
+  try{
+    const o=AC.createOscillator(), g=AC.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(vol||0.12, AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime+(dur||0.15));
+    o.connect(g); g.connect(AC.destination); o.start(); o.stop(AC.currentTime+(dur||0.15)+0.02);
+  }catch(e){}
+}
+const sfx = {
+  ding:  ()=>{ beep(880,.12,'sine',.1); setTimeout(()=>beep(1320,.2,'sine',.08),110); },
+  punch: ()=>beep(120,.12,'square',.16),
+  water: ()=>beep(520,.25,'sine',.1),
+  click: ()=>beep(700,.05,'square',.06),
+  scream:()=>beep(rnd(600,900),.4,'sawtooth',.1),
+  bird:  ()=>beep(1600,.1,'square',.08),
+  boom:  ()=>{ beep(60,.8,'sawtooth',.3); beep(45,1.2,'square',.2); },
+  crashS:()=>{ beep(70,1.5,'sawtooth',.4); beep(50,2,'square',.3); },
+};
+
+// ---------------- радио ----------------
+function say(text, secs){ S.sub = 'КАПИТАН: ' + text; S.subT = secs||6; }
+function announce(type){
+  const cd = S.radioCd[type]||0;
+  if (S.time < cd) return;
+  S.radioCd[type] = S.time + (type==='turb'?35:25);
+  const lines = RADIO[type]; if(!lines) return;
+  say(lines[ri(0,lines.length-1)], 7); sfx.ding();
+}
+
+// ---------------- ввод ----------------
+const keys = {};
+addEventListener('keydown', e=>{
+  keys[e.code]=true;
+  if(e.code==='Escape') togglePause();
+  if(e.code==='KeyM'){ muted=!muted; }
+  if(['Space','ArrowUp','ArrowDown'].includes(e.code)) e.preventDefault();
+});
+addEventListener('keyup', e=>{ keys[e.code]=false; });
+cv.addEventListener('mousedown', e=>{ if(e.button===0) onPunch(); });
+
+// ---------------- фазы ----------------
+function togglePause(){
+  if(!S || S.over) return;
+  S.pause = !S.pause;
+  $('pause').style.display = S.pause?'flex':'none';
+  if(engGain) engGain.gain.value = (S.pause||muted)?0:0.05;
+}
+function endFlight(crashed){
+  S.over = true; S.phase = crashed?'crashed':'landed';
+  const p = S.pax.filter(p=>p.state!=='ejected' && p.state!=='away');
+  const calm = p.filter(p=>p.state==='calm'||p.state==='calmed'||p.knock>0).length;
+  const ejected = S.st.ejected, birds = S.st.birdsEaten, liters = Math.round(S.st.refueled);
+  const pay = crashed?0: 3000 + calm*200 - ejected*150 + (S.fuel>150?300:0) - S.vasesBroken*100;
+  $('resTitle').textContent = crashed ? 'КРУШЕНИЕ…' : 'РЕЙС ВЫПОЛНЕН!';
+  $('resTitle').style.color = crashed ? '#ff4b3a' : '#5ee07a';
+  $('resStats').innerHTML =
+    'Пассажиров доставлено спокойно: <b>'+calm+'</b><br>'+
+    'Пассажиров выброшено за борт: <b>'+ejected+'</b><br>'+
+    'Птиц съедено двигателями: <b>'+birds+'</b><br>'+
+    'Литров заправлено в воздухе: <b>'+liters+'</b><br>'+
+    'Разбитых ваз: <b>'+S.vasesBroken+'</b> из '+S.vases+'<br><br>'+
+    (crashed ? 'Оплата: 0 у.е. Билетов больше не продавайте.' : 'Оплата рейса: <b>'+pay+' у.е.</b> Экипаж справился. Почти.');
+  $('results').style.display='flex';
+  if(engGain) engGain.gain.value=0;
+  if(crashed) sfx.crashS(); else sfx.ding();
+}
+
+// ---------------- пассажиры ----------------
+function paxUpdate(dt){
+  const flight = (S.phase==='flight');
+  let stressAll = 0;
+  const stressRate = 0.15 + S.turb*3 + (S.fire[0]||S.fire[1]?4:0) + (S.doorOpen&&flight?3:0) + (flight&&S.speed<160?2:0);
+  for(const p of S.pax){
+    if(p.state==='away' || p.state==='ejected') continue;
+    // нокаут-таймер
+    if(p.knock>0){ p.knock-=dt; if(p.knock<=0){ p.state='calmed'; p.stress=0; } continue; }
+    if(p.state==='carried') continue;
+    // посадка на место при буординге
+    if(S.phase==='boarding'){
+      const tx = SEATS[p.seat].x;
+      if(Math.abs(p.x-tx)>4){ p.x += Math.sign(tx-p.x)*60*dt; p.stand = true; }
+      else p.stand = false;
+    }
+    // стресс
+    let pr = p.pers===1?0.2 : (p.pers===2?0.05 : (p.pers===3?-0.15:0));
+    p.stress = clamp(p.stress + (stressRate+pr)*dt, 0, 100);
+    // паника заражает
+    if(p.state==='panic' || p.state==='aggr'){
+      for(const q of S.pax){
+        if(q===p||q.state==='away'||q.state==='ejected'||q.state==='carried'||q.knock>0) continue;
+        if(Math.abs(q.x-p.x)<90) q.stress += 10*dt;
+      }
+    }
+    // переход в панику/агрессию
+    if(p.stress>=100 && p.state==='calm'){
+      if(p.pers===2 && Math.random()<0.6){ p.state='aggr'; bubble(p,'aggr'); }
+      else { p.state='panic'; bubble(p,'panic'); sfx.scream(); }
+      p.stand = true;
+    }
+    if(p.state==='panic' && Math.random()<dt*0.3) bubble(p,'panic');
+    if(p.state==='aggr'){
+      // агрессор бьёт случайного рядом
+      p.punchT = (p.punchT||0) - dt;
+      if(p.punchT<=0){
+        p.punchT = rnd(1.5,3.5);
+        const near = S.pax.filter(q=>q!==p && q.state!=='ejected' && q.state!=='away' && q.state!=='carried' && q.knock<=0 && Math.abs(q.x-p.x)<70);
+        if(near.length){
+          const v = near[ri(0,near.length-1)];
+          v.stress += 30; v.hp -= 10; sfx.punch();
+          if(v.hp<=0){ v.knock=20; v.stand=false; }
+          else if(v.stress>=100 && v.state==='calm'){ v.state='panic'; bubble(v,'panic'); }
+          S.st.fights++;
+          if(S.st.fights===1 || S.st.fights%5===0) announce('fight');
+        }
+      }
+    }
+    stressAll += (p.state==='panic'||p.state==='aggr') ? 0 : p.stress;
+    p.bubT -= dt; if(p.bubT<=0) p.bubble='';
+  }
+  S.mood = 100 - (stressAll / Math.max(1,S.pax.filter(p=>p.state!=='away'&&p.state!=='ejected').length));
+}
+function bubble(p, kind){
+  const list = BUBBLES[kind] || BUBBLES.calm;
+  p.bubble = list[ri(0,list.length-1)]; p.bubT = 3;
+}
+
+// ---------------- птицы и частицы ----------------
+function birdsUpdate(dt){
+  if(S.phase!=='flight') return;
+  S.birdT -= dt;
+  if(S.birdT<=0){
+    S.birdT = rnd(26,55);
+    const n = ri(5,13), y0 = rnd(-260,220);
+    for(let i=0;i<n;i++) S.birds.push({ x: S.cam+innerWidth+200+i*rnd(30,80), y: y0+rnd(-40,40), v: rnd(160,240), fl: rnd(0,6) });
+  }
+  for(const b of S.birds){
+    b.x -= (b.v + S.speed*0.35)*dt; b.fl += dt*14;
+    // столкновение с носом самолёта (нос — мировой X = CAB.x0)
+    if(!b.hit && b.x < CAB.x0+50){
+      b.hit = true;
+      if(b.y>=60 && b.y<=150){ // двигатель под крылом
+        const e = ri(0,1); S.eng[e] = Math.max(35, S.eng[e]-ri(10,20));
+        if(S.eng[e]<25 && !S.fire[e]){ S.fire[e]=true; S.fireT[e]=25; announce('fire'); }
+        S.st.birdsEaten++; announce('bird'); sfx.bird(); sfx.boom();
+        for(let i=0;i<10;i++) S.parts.push(feather(b.x,b.y));
+        addStressAll(20);
+      } else if(b.y>=-130 && b.y<-50){ // лобовое стекло
+        S.cracks++; sfx.bird(); addStressAll(12);
+      } // иначе пролетела выше/ниже
+    }
+  }
+  S.birds = S.birds.filter(b=>b.x > S.cam-300 && !(b.hit));
+}
+function feather(x,y){ return {x,y,vx:rnd(-60,40),vy:rnd(20,90),t:rnd(1,2.5),kind:'feather',rot:rnd(0,6)}; }
+function addStressAll(a){ for(const p of S.pax){ if(p.state!=='away'&&p.state!=='ejected') p.stress+=a; } }
+// ---------------- заправка ----------------
+function refuelUpdate(dt){
+  const lowFuel = S.fuel < S.fuelCap*0.25;
+  if(S.refuelStage===0 && S.phase==='flight' && lowFuel){
+    S.refuelStage=1; S.tankerX = S.cam + innerWidth + 500; announce('refuel'); announce('lowfuel');
+  }
+  if(S.refuelStage===1){
+    S.tankerX -= 90*dt;
+    if(S.tankerX < S.cam + innerWidth*0.62) S.refuelStage=2;
+  }
+  if(S.refuelStage===2 && !S.onWing){
+    // ждём игрока на крыле
+  }
+  if(S.refuelStage===2 && S.onWing){
+    // дрейф маркера
+    const drift = (0.5 + S.turb*1.4);
+    S.marker.x += noise1(S.time*1.1+2)*drift*dt*6;
+    S.marker.y += noise1(S.time*1.1+6)*drift*dt*6;
+    if(keys.KeyA) S.marker.x -= 1.6*dt;
+    if(keys.KeyD) S.marker.x += 1.6*dt;
+    if(keys.KeyW) S.marker.y -= 1.6*dt;
+    if(keys.KeyS) S.marker.y += 1.6*dt;
+    S.marker.x = clamp(S.marker.x,-1,1); S.marker.y = clamp(S.marker.y,-1,1);
+    const inRing = Math.hypot(S.marker.x,S.marker.y) < 0.38;
+    if(inRing){
+      S.fuel = Math.min(S.fuelCap, S.fuel + 22*dt);
+      S.st.refueled += 22*dt;
+      if(S.fuel>=S.fuelCap*0.999){ S.refuelStage=3; S.onWing=false; announce('refueled'); }
+    }
+    if(keys.KeyF){ S.onWing=false; }
+  }
+}
+
+// ---------------- игрок ----------------
+function nearestPax(){
+  let best=null, bd=70;
+  for(const p of S.pax){
+    if(p.state==='away'||p.state==='ejected'||p.state==='carried') continue;
+    const d = Math.abs(p.x - S.pl.x);
+    if(d<bd){ bd=d; best=p; }
+  }
+  return best;
+}
+function promptText(){
+  const P=S.pl;
+  if(S.over) return '';
+  if(P.piloting) return 'ШТУРВАЛ: ↑/↓ тангаж · W/S тяга · R — встать';
+  if(S.onWing) return 'КРЫЛО: WASD — держать маркер в кольце · F — вернуться внутрь';
+  if(S.refuelStage===2 && near(CAB.hatch,60) && !S.onWing) return 'E — выйти на крыло со шлангом (заправка)';
+  if(near(CAB.cockpit,60)) return S.phase==='boarding' ? 'E — сесть за штурвал · Y — ВЗЛЁТ' : 'E — сесть за штурвал';
+  if(near(CAB.door,50)) return S.doorOpen ? 'E — закрыть дверь' : 'E — открыть дверь'+(P.carry?' · ЛКМ — ВЫБРОСИТЬ (18+)':'');
+  if(near(CAB.galley,55)) return P.water ? 'У вас уже есть стакан воды' : 'E — взять стакан воды';
+  const p = nearestPax();
+  if(p){
+    if(P.carry===p) return 'E — отпустить';
+    if(P.water) return 'E — успокоить · F — напоить водой · удерживать E — схватить';
+    return 'E — успокоить · удерживать E — схватить';
+  }
+  return '';
+}
+function near(x,d){ return Math.abs(S.pl.x-x)<d; }
+
+function playerUpdate(dt){
+  const P = S.pl;
+  P.punchCd -= dt;
+  if(P.piloting){
+    if(keys.ArrowUp)   P.pitchInput = clamp((P.pitchInput||0)+1.4*dt,-1,1);
+    if(keys.ArrowDown) P.pitchInput = clamp((P.pitchInput||0)-1.4*dt,-1,1);
+    if(keys.KeyW) S.throttle = clamp(S.throttle+0.5*dt,0,1);
+    if(keys.KeyS) S.throttle = clamp(S.throttle-0.5*dt,0,1);
+    if(keys.KeyR){ P.piloting=false; P.x = CAB.cockpit+40; }
+    S.pitchTarget = P.piloting ? (P.pitchInput||0) : 0;
+  } else if(!S.onWing){
+    let vx=0;
+    if(keys.KeyA) vx=-1;
+    if(keys.KeyD) vx=1;
+    if(vx){ P.dir=vx; }
+    P.x = clamp(P.x + vx*260*dt, CAB.cockpit+30, CAB.cargo0+40);
+    // E — действия
+    if(keys.KeyE){
+      if(!P.eHeld){ P.eHeld=true; onInteract(); P.holdT=0; }
+      else {
+        // удержание — схватить
+        const p = nearestPax();
+        if(p && !P.carry && p.knock<=0 && p.state!=='away'){
+          P.holdT += dt;
+          if(P.holdT>0.9){ P.carry=p; p.state='carried'; p.stand=true; P.holdT=0; }
+        }
+      }
+    } else { P.eHeld=false; P.holdT=0; }
+    if(keys.KeyF && !P.fHeld){ P.fHeld=true; onSecondary(); }
+    if(!keys.KeyF) P.fHeld=false;
+  }
+  // ноша следует за игроком
+  if(P.carry){ P.carry.x = P.x - P.dir*26; }
+  // выброс у двери
+  // (обрабатывается в onPunch)
+}
+function onInteract(){
+  const P=S.pl;
+  if(P.carry){ // отпустить
+    const p=P.carry; P.carry=null; p.state='calm'; p.stand=false; p.stress=Math.max(0,p.stress-20);
+    return;
+  }
+  if(S.refuelStage===2 && near(CAB.hatch,60)){ S.onWing=true; S.marker={x:0,y:0}; say('Держите маркер в кольце! WASD — выравнивание, F — вернуться.',4); return; }
+  if(near(CAB.cockpit,60)){ P.piloting=true; P.pitchInput=S.pitchTarget; say('Вы за штурвалом. ↑/↓ — тангаж, W/S — тяга, R — встать.',4); return; }
+  if(near(CAB.door,50)){
+    S.doorOpen=!S.doorOpen;
+    if(S.doorOpen && S.phase==='flight'){ addStressAll(25); announce('paxout'); }
+    sfx.click(); return;
+  }
+  if(near(CAB.galley,55) && !P.water){ P.water=true; sfx.water(); return; }
+  const p = nearestPax();
+  if(p){
+    const chance = p.state==='aggr' ? 0.15 : 0.65;
+    if(p.knock>0){ say('Пассажир без сознания. Подождёт.',3); return; }
+    if(Math.random()<chance){ p.state='calmed'; p.stress=0; p.stand=false; bubble(p,'calmed'); sfx.ding(); }
+    else { p.stress+=10; bubble(p, p.pers===3?'drunk':'panic'); say('Не помогло. Он ещё шумнее.',2.5); }
+  }
+}
+function onSecondary(){
+  const P=S.pl;
+  if(S.onWing) return;
+  if(!P.water) return;
+  const p = nearestPax();
+  if(p && p.knock<=0){
+    p.state='calmed'; p.stress=0; p.stand=false; bubble(p,'calmed'); P.water=false; sfx.water();
+  }
+}
+function onPunch(){
+  if(!S || S.over || S.pause || S.onWing || S.pl.piloting) return;
+  const P=S.pl;
+  if(P.punchCd>0) return;
+  P.punchCd=0.45;
+  if(P.carry){
+    // выброс у открытой двери
+    if(S.doorOpen && near(CAB.door,80)){
+      const p=P.carry; P.carry=null;
+      p.state='ejected'; p.vx=-120; p.vy=-260; p.rot=0;
+      S.st.ejected++; addStressAll(25); announce('paxout'); sfx.scream();
+    } else {
+      say(S.doorOpen ? 'Подойдите к двери.' : 'Сначала откройте дверь (E у двери). И вы вообще уверены?.. 18+',3);
+    }
+    return;
+  }
+  const p = nearestPax();
+  if(p && p.knock<=0){
+    p.hp -= 40; p.stress += 18; sfx.punch();
+    if(p.hp<=0){ p.knock=20; p.stand=false; bubble(p,'calmed'); }
+  }
+}
+
+// ---------------- полётная модель ----------------
+function flightUpdate(dt){
+  const ph = S.phase;
+  // На стоянке самолёт стоит: тишина, ждём команду на взлёт.
+  if(ph==='boarding'){
+    if(keys.KeyY){ S.phase='takeoff'; say('Взлетаем! Пристегните… всё, что можно пристегнуть.',5); sfx.ding(); }
+    S.turb=0.04; S.pitch=0; S.speed=0; S.throttle=0;
+    if(engGain && !muted) engGain.gain.value=0.015;
+    if(engOsc) engOsc.frequency.value=30;
+    return;
+  }
+  // турбулентность
+  S.turbPhase += dt;
+  const base = ph==='flight' ? 0.35 : 0.1;
+  S.turb = clamp(Math.abs(noise1(S.turbPhase*0.23))*1.4*base + (S.pocketT<1.2?0.8:0), 0, 1);
+  S.pocketT -= dt;
+  if(S.pocketT<=0 && ph==='flight'){ S.pocketT = rnd(14,40); S.pocket = 1.2; if(Math.random()<0.5) announce('turb'); }
+  if(S.pocket>0) S.pocket -= dt;
+
+  // тяга двигателей
+  const engF = (S.eng[0]+S.eng[1])/200;
+  if(ph==='takeoff' || ph==='landing'){
+    S.throttle = ph==='takeoff' ? Math.min(1,S.throttle+0.25*dt) : 0.35;
+    S.pitchTarget = ph==='takeoff' ? (S.speed>270?0.45:0) : (ph==='landing'?-0.08:0);
+  } else if(!S.pl.piloting){
+    S.throttle = lerp(S.throttle, 0.62, dt*0.5); // автопилот держит крейсер
+    S.pitchTarget = 0;
+  }
+  const accel = S.throttle*300*engF - S.speed*0.55;
+  S.speed = Math.max(0, S.speed + accel*dt);
+
+  // тангаж
+  const jit = noise1(S.time*3.1)*S.turb*0.1;
+  S.pitch = lerp(S.pitch, S.pitchTarget+jit, dt*1.6);
+
+  // вертикальная скорость
+  let vs = S.speed*Math.sin(S.pitch*0.5)*0.9;
+  if(ph==='landing'){ vs = -(S.alt/12 + 6); }   // глиссада: плавно и вовремя
+  if(ph==='flight' && S.speed<145){ vs -= (145-S.speed)*0.35; S.stallWarn=1; if(Math.random()<dt*0.5) announce('stall'); }
+  else S.stallWarn=Math.max(0,S.stallWarn-dt);
+  if(S.fuel<=0){ vs -= 30; }
+  if(ph!=='boarding') S.alt = Math.max(0, S.alt + vs*dt);
+
+  // топливо и дистанция
+  if(ph==='flight'||ph==='takeoff'){
+    S.fuel -= (0.35 + S.throttle*1.3)*dt;
+    S.dist -= S.speed*dt;
+  }
+
+  // фазовые переходы
+  if(ph==='takeoff' && S.alt>2500){ S.phase='flight'; announce('welcome'); }
+  if(ph==='flight' && S.dist<=2500){ S.phase='landing'; announce('landing'); S.refuelStage=3; S.onWing=false; }
+  if(ph==='landing' && S.alt<=0){
+    endFlight(S.speed>330 || S.vsLast<-16);
+  }
+  if(ph==='flight' && S.alt<=0.5){ endFlight(true); }
+  S.vsLast = vs;
+
+  // двигатели: пожар тратит, экипаж потихоньку чинит, огонь со временем гаснет
+  for(let e=0;e<2;e++){
+    if(S.fire[e]){
+      S.eng[e]=Math.max(0,S.eng[e]-2*dt);
+      S.fireT[e]-=dt;
+      if(S.fireT[e]<=0){ S.fire[e]=false; say('Пожар двигателя потух сам. Техника — великая сила.',4); } if(Math.random()<dt*2) S.parts.push({x:CAB.hatch+80+e*40,y:rnd(55,90),vx:rnd(-30,30),vy:rnd(20,60),t:1.2,kind:'smoke'}); }
+    else if(S.eng[e]<100){ S.eng[e]=Math.min(100,S.eng[e]+1.2*dt); }
+  }
+
+  // вазы бьются в турбулентность
+  if(ph==='flight' && S.turb>0.7 && S.vasesBroken<S.vases && Math.random()<dt*0.5){
+    S.vasesBroken++; addStressAll(8); say('Из груза доносится звон разбитой вазы. Прощай, бонус.',4);
+  }
+
+  // звук двигателя
+  if(engGain && !muted && !S.pause) engGain.gain.value = 0.02 + S.throttle*0.05*(0.3+engF*0.7);
+  if(engOsc) engOsc.frequency.value = 30 + S.speed*0.25;
+}
+
+// ---------------- частицы/выброшенные ----------------
+function miscUpdate(dt){
+  for(const p of S.parts){
+    p.t-=dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+= (p.kind==='feather'? 10: -20)*dt; p.rot+=dt*4;
+  }
+  S.parts = S.parts.filter(p=>p.t>0);
+  for(const p of S.pax){
+    if(p.state==='ejected'){
+      p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=300*dt; p.rot+=dt*7;
+    }
+  }
+  S.subT-=dt; if(S.subT<=0) S.sub='';
+  S.camShake = lerp(S.camShake||0, S.turb*6 + (S.stallWarn>0?4:0), dt*4);
+}
+
+// ============================ ОТРИСОВКА ============================
+function draw(){
+  const W=cv.width, Hh=cv.height;
+  const cy = Hh*0.62;                      // линия пола салона на экране
+  CAB.floorY = cy;
+  S.cam = clamp(S.pl.x - W*0.42, -400, CAB.x1+40 - W*0.9);
+  const cam = S.cam + (Math.random()-0.5)*(S.camShake||0);
+  const altK = clamp(S.alt/3000,0,1);      // 0 земля — 1 эшелон
+
+  // ---- небо ----
+  const g = ctx.createLinearGradient(0,0,0,Hh);
+  if(S.phase==='crashed'){ g.addColorStop(0,'#3a2a20');g.addColorStop(1,'#1a120c'); }
+  else { g.addColorStop(0, mix('#5a8fc4','#0b1030',altK)); g.addColorStop(0.7, mix('#a8c8e8','#101b3a',altK)); g.addColorStop(1, mix('#d8e8f4','#182646',altK)); }
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,Hh);
+
+  ctx.save();
+  ctx.translate(0,0);
+
+  // ---- земля / горы (параллакс) ----
+  if(S.phase!=='crashed'){
+    drawGround(cam, cy, altK, W, Hh);
+  }
+
+  // ---- самолёт (вид сбоку, салон-разрез) ----
+  ctx.save();
+  // наклон самолёта от тангажа
+  ctx.translate(W*0.5, cy-140);
+  ctx.rotate(-S.pitch*0.12);
+  ctx.translate(-W*0.5, -(cy-140));
+  drawPlane(cam, cy, W);
+  ctx.restore();
+
+  // ---- птицы ----
+  ctx.fillStyle='#2e3238';
+  for(const b of S.birds){
+    const bx = b.x-cam, by = cy+b.y;
+    const fl = Math.sin(b.fl)*8;
+    ctx.beginPath();
+    ctx.moveTo(bx-10,by-fl*0.6); ctx.lineTo(bx,by); ctx.lineTo(bx+10,by-fl*0.6);
+    ctx.strokeStyle='#2e3238'; ctx.lineWidth=3; ctx.stroke();
+  }
+
+  // ---- частицы ----
+  for(const p of S.parts){
+    const px=p.x-cam, py=cy+p.y;
+    if(p.kind==='feather'){ ctx.save();ctx.translate(px,py);ctx.rotate(p.rot);ctx.fillStyle='rgba(240,240,240,'+clamp(p.t,0,1)+')';ctx.fillRect(-4,-1.5,8,3);ctx.restore(); }
+    else { ctx.fillStyle='rgba(60,60,60,'+clamp(p.t,0,1)*0.6+')'; ctx.beginPath();ctx.arc(px,py,8,0,7);ctx.fill(); }
+  }
+  ctx.restore();
+
+  // ---- виньетка тревоги/трещины ----
+  if(S.cracks>0){
+    ctx.save(); ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=2;
+    for(let i=0;i<S.cracks;i++){
+      const a=i*2.4, r0=40+i*17;
+      ctx.beginPath();
+      ctx.moveTo(W*0.5+Math.cos(a)*r0, Hh*0.3+Math.sin(a)*r0*0.5);
+      ctx.lineTo(W*0.5+Math.cos(a+0.5)*(r0+90), Hh*0.3+Math.sin(a+0.5)*(r0+45)*0.5);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+  if(S.stallWarn>0 || S.fire[0] || S.fire[1]){
+    ctx.fillStyle='rgba(255,40,20,'+(0.08+0.05*Math.sin(S.time*10))+')';
+    ctx.fillRect(0,0,W,Hh);
+  }
+}
+function mix(c1,c2,t){
+  const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+  const a=p(c1),b=p(c2);
+  return 'rgb('+Math.round(lerp(a[0],b[0],t))+','+Math.round(lerp(a[1],b[1],t))+','+Math.round(lerp(a[2],b[2],t))+')';
+}
+function drawGround(cam, cy, altK, W, Hh){
+  // дальние горы
+  ctx.fillStyle = mix('#7d8ba0','#0d1526',altK);
+  hillLayer(cam*0.25, cy+10, 150, 260, W, 137);
+  ctx.fillStyle = mix('#5f7050','#0b1220',altK);
+  hillLayer(cam*0.5, cy+22, 90, 180, W, 211);
+  // земля
+  ctx.fillStyle = mix('#4f5e42','#0a0f1c',altK);
+  ctx.fillRect(0, cy+26, W, Hh-cy);
+  // полоса аэродрома на стоянке
+  if(S.alt<40 && S.phase!=='crashed'){
+    ctx.fillStyle='#3b3f45'; ctx.fillRect(0,cy+26,W,14);
+    ctx.fillStyle='#e8c14d';
+    for(let x=-(cam*1%80);x<W;x+=80) ctx.fillRect(x,cy+31,34,4);
+  }
+}
+function hillLayer(off, y, hMin, hMax, W, seed){
+  ctx.beginPath(); ctx.moveTo(0,y+40);
+  for(let x=0;x<=W;x+=40){
+    const wx=(x+off)*0.004+seed;
+    ctx.lineTo(x, y - (hMin + (hMax-hMin)*(0.5+0.5*noise1(wx*6))));
+  }
+  ctx.lineTo(W,y+40); ctx.closePath(); ctx.fill();
+}
+function drawPlane(cam, cy, W){
+  const x0 = CAB.x0 - cam, x1 = CAB.x1 - cam, fy = cy;
+  // ---- фюзеляж (внешний контур) ----
+  ctx.fillStyle = '#e8eaee';
+  roundRect(x0-30, fy-150, (x1-x0)+60, 185, 70); ctx.fill();
+  // хвост
+  ctx.beginPath();
+  ctx.moveTo(x1+18, fy-120); ctx.lineTo(x1+70, fy-235); ctx.lineTo(x1+92, fy-235); ctx.lineTo(x1+60, fy-95);
+  ctx.closePath(); ctx.fill();
+  // крыло (за салоном)
+  ctx.fillStyle='#c9ced6';
+  ctx.beginPath();
+  ctx.moveTo(CAB.hatch-cam+30, fy+8); ctx.lineTo(CAB.hatch-cam+150, fy+66); ctx.lineTo(CAB.hatch-cam+150, fy+78); ctx.lineTo(CAB.hatch-cam+30, fy+34);
+  ctx.closePath(); ctx.fill();
+  // двигатель под крылом + винт
+  const engX = CAB.hatch-cam+95, engY = fy+80;
+  ctx.fillStyle = S.fire[1]?'#a33':'#9aa2ad';
+  ctx.beginPath(); ctx.ellipse(engX, engY, 26, 18, 0, 0, 7); ctx.fill();
+  if(S.speed>40){
+    ctx.strokeStyle='rgba(255,255,255,0.7)'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.ellipse(engX-30, engY, 5, 30*Math.min(1,S.speed/200), 0, 0, 7); ctx.stroke();
+  }
+  if(S.fire[1]){ flame(engX, engY-14); }
+
+  // ---- интерьер (вырез) ----
+  ctx.fillStyle = '#f2efe8';
+  roundRect(x0+16, fy-132, (x1-x0)-30, 148, 22); ctx.fill();
+  // пол
+  ctx.fillStyle = '#565049';
+  ctx.fillRect(x0+16, fy+16, (x1-x0)-30, 8);
+
+  // окна
+  ctx.fillStyle = mix('#9fc4e4','#141d38', clamp(S.alt/3000,0,1));
+  for(let i=0;i<12;i++){
+    const wx = CAB.cabin0-40-cam + i*64;
+    if(wx>x0+30 && wx<x1-30){ roundRect(wx, fy-118, 40, 30, 12); ctx.fill(); }
+  }
+  // иллюминаторы «мелькание» при скорости — полоски за окнами уже даёт параллакс
+
+  // ---- кабина пилота ----
+  ctx.fillStyle='#2b3038';
+  roundRect(x0+22, fy-128, 92, 80, 12); ctx.fill();
+  ctx.fillStyle='#9fd0f0'; // лобовое
+  ctx.beginPath(); ctx.moveTo(x0+26,fy-124); ctx.lineTo(x0+56,fy-124); ctx.lineTo(x0+40,fy-160); ctx.lineTo(x0+24,fy-160); ctx.closePath(); ctx.fill();
+  if(S.cracks>0){ ctx.strokeStyle='rgba(255,255,255,0.8)'; ctx.lineWidth=1.5;
+    for(let i=0;i<S.cracks;i++){ ctx.beginPath(); ctx.moveTo(x0+34,fy-140); ctx.lineTo(x0+34+Math.cos(i)*22, fy-140+Math.sin(i*2.3)*16); ctx.stroke(); } }
+  // кресло и штурвал
+  ctx.fillStyle='#1e2b45'; roundRect(x0+70, fy-64, 30, 46, 6); ctx.fill();
+  ctx.strokeStyle='#d8b24a'; ctx.lineWidth=4;
+  ctx.beginPath(); ctx.arc(x0+86, fy-52, 14, 0, 7); ctx.stroke();
+
+  // ---- дверь ----
+  ctx.fillStyle = S.doorOpen ? '#7c8894' : '#b6bec8';
+  ctx.save();
+  ctx.translate(CAB.door-cam, fy-110);
+  if(S.doorOpen) ctx.transform(0.35,0,1,1,-26,0);
+  roundRect(0,0,46,120,8); ctx.fill();
+  ctx.fillStyle='#39424c'; ctx.fillRect(34,52,8,18);
+  ctx.restore();
+  if(S.doorOpen && S.phase==='flight'){
+    // линии ветра из двери
+    ctx.strokeStyle='rgba(255,255,255,0.35)'; ctx.lineWidth=2;
+    for(let i=0;i<4;i++){ const yy=fy-100+i*28; ctx.beginPath(); ctx.moveTo(CAB.door-cam-8,yy); ctx.lineTo(CAB.door-cam-8-rnd(30,60)-noise1(S.time*6+i)*20,yy); ctx.stroke(); }
+  }
+
+  // ---- буфет ----
+  ctx.fillStyle='#8892a0'; roundRect(CAB.galley-cam-8, fy-70, 46, 84, 6); ctx.fill();
+  ctx.fillStyle='#4fc3e8'; ctx.fillRect(CAB.galley-cam+2, fy-60, 26, 34);
+  ctx.fillStyle='#eef6fa'; roundRect(CAB.galley-cam+6, fy-30, 18, 24, 4); ctx.fill();
+
+  // ---- груз: вазы ----
+  for(let i=0;i<S.vases;i++){
+    const vx = CAB.cargo0-cam+18 + i*20;
+    if(i>=S.vases-S.vasesBroken){ ctx.fillStyle='#c9c2b6'; ctx.fillRect(vx-6,fy+2,12,4); }
+    else { ctx.fillStyle='#c98a4b'; ctx.beginPath(); ctx.ellipse(vx,fy-4,7,12,0,0,7); ctx.fill(); }
+  }
+
+  // ---- кресла ----
+  for(const s of SEATS){
+    const sx = s.x-cam;
+    ctx.fillStyle='#28406b'; roundRect(sx-16, fy-52, 32, 12, 4); ctx.fill();
+    roundRect(sx-16, fy-92, 8, 44, 4); ctx.fill();
+  }
+
+  // ---- пассажиры ----
+  for(const p of S.pax){
+    if(p.state==='away') continue;
+    const px = p.x-cam;
+    if(px<-80||px>W+80) continue;
+    drawPerson(px, fy + (p.state==='ejected'? p.y : 0), p, personColor(p));
+    // пузырь
+    if(p.bubble && p.bubT>0 && p.state!=='ejected'){
+      ctx.font='12px Segoe UI';
+      const tw = ctx.measureText(p.bubble).width;
+      ctx.fillStyle='rgba(255,255,255,0.92)';
+      roundRect(px-tw/2-8, fy-128, tw+16, 20, 8); ctx.fill();
+      ctx.fillStyle='#222'; ctx.textAlign='center'; ctx.fillText(p.bubble, px, fy-114);
+    }
+  }
+
+  // ---- игрок ----
+  if(!S.pl.piloting){
+    const P=S.pl;
+    drawPerson(P.x-cam, fy, {knock:0, stand:false, state:'player', dir:P.dir}, '#f27321', true);
+    if(P.water){ ctx.fillStyle='#4fc3e8'; ctx.fillRect(P.x-cam + P.dir*16, fy-58, 8, 12); }
+    if(P.carry){ drawPerson(P.x-cam - P.dir*26, fy-26, P.carry, personColor(P.carry)); }
+  } else {
+    // руки на штурвале
+    ctx.fillStyle='#f27321';
+    ctx.beginPath(); ctx.arc(x0+86, fy-52, 8, 0, 7); ctx.fill();
+  }
+  // игрок на крыле
+  if(S.onWing){
+    drawPerson(CAB.hatch-cam+60, fy+44, {knock:0,stand:false,dir:1}, '#f27321', true);
+    ctx.strokeStyle='rgba(255,255,255,0.4)';
+    for(let i=0;i<3;i++){ ctx.beginPath(); ctx.moveTo(CAB.hatch-cam+40+i*24, fy+20); ctx.lineTo(CAB.hatch-cam+20+i*24, fy+20+noise1(S.time*8+i)*8); ctx.stroke(); }
+  }
+
+  // ---- заправщик ----
+  if(S.refuelStage===1 || S.refuelStage===2){
+    const tx = (S.refuelStage===1? S.tankerX : S.cam+innerWidth*0.62) - cam;
+    ctx.fillStyle='#d9c33c';
+    roundRect(tx-90, fy-330, 180, 40, 18); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(tx+60,fy-320); ctx.lineTo(tx+120,fy-360); ctx.lineTo(tx+134,fy-356); ctx.lineTo(tx+80,fy-306); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='#333'; ctx.lineWidth=4;
+    ctx.beginPath(); ctx.moveTo(tx, fy-290); ctx.lineTo(tx, fy-240); ctx.stroke();
+    ctx.fillStyle='#222'; ctx.beginPath(); ctx.arc(tx, fy-236, 7, 0, 7); ctx.fill();
+    // шланг к кольцу
+    if(S.refuelStage===2){
+      ctx.strokeStyle='#333'; ctx.lineWidth=3;
+      ctx.beginPath(); ctx.moveTo(tx, fy-236);
+      ctx.quadraticCurveTo(tx+30, fy-190, CAB.hatch-cam+60, fy+10);
+      ctx.stroke();
+    }
+  }
+}
+function personColor(p){
+  if(p.state==='panic') return '#f4d35e';
+  if(p.state==='aggr') return '#e63946';
+  if(p.state==='calmed') return '#90e0ef';
+  return '#7ac74f';
+}
+function drawPerson(x, fy, p, color, isPlayer){
+  ctx.save();
+  ctx.translate(x, fy);
+  if(p.state==='ejected'){ ctx.rotate(p.rot); }
+  if(p.knock>0){ ctx.rotate(Math.PI/2); ctx.translate(-14,-10); }
+  // тело
+  ctx.fillStyle = isPlayer? color : (p.pers===3?'#a06cc4':(p.pers===1?'#c9b458':'#7f8a96'));
+  roundRect(-9, -46, 18, 34, 7); ctx.fill();
+  // «жилет» цвета состояния
+  if(!isPlayer){ ctx.fillStyle=color; roundRect(-9,-46,18,10,4); ctx.fill(); }
+  // голова
+  ctx.fillStyle='#e8c39e';
+  ctx.beginPath(); ctx.arc(0, -54, 9, 0, 7); ctx.fill();
+  // ноги
+  ctx.fillStyle='#2c3038';
+  const step = p.stand? Math.sin(S.time*10)*4 : 0;
+  ctx.fillRect(-7, -13, 6, 13+step*0);
+  ctx.fillRect(1, -13, 6, 13);
+  ctx.restore();
+}
+function flame(x,y){
+  ctx.fillStyle='rgba(255,120,20,0.85)';
+  ctx.beginPath(); ctx.ellipse(x, y-8, 10, 16+Math.sin(S.time*20)*4, 0, 0, 7); ctx.fill();
+  ctx.fillStyle='rgba(255,220,80,0.9)';
+  ctx.beginPath(); ctx.ellipse(x, y-4, 5, 9, 0, 0, 7); ctx.fill();
+}
+function roundRect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+// ---- мини-игра заправки (оверлей) ----
+function drawRefuel(){
+  if(!(S.refuelStage===2 && S.onWing)){ $('refuel').style.display='none'; return; }
+  $('refuel').style.display='block';
+  rfCtx.clearRect(0,0,420,420);
+  rfCtx.strokeStyle='rgba(255,200,60,0.9)'; rfCtx.lineWidth=8;
+  rfCtx.beginPath(); rfCtx.arc(210,210,95,0,7); rfCtx.stroke();
+  const inRing = Math.hypot(S.marker.x,S.marker.y)<0.38;
+  rfCtx.fillStyle = inRing? '#4fe07a':'#ff5040';
+  rfCtx.beginPath(); rfCtx.arc(210+S.marker.x*180, 210+S.marker.y*180, 16, 0, 7); rfCtx.fill();
+  rfCtx.fillStyle='#fff'; rfCtx.font='16px Segoe UI'; rfCtx.textAlign='center';
+  rfCtx.fillText('Топливо: '+Math.round(S.fuel/S.fuelCap*100)+'%', 210, 40);
+  rfCtx.fillStyle='#9aa'; rfCtx.font='13px Segoe UI';
+  rfCtx.fillText('WASD — держите маркер в кольце · F — вернуться', 210, 395);
+}
+
+// ---- HUD (DOM) ----
+function drawHud(){
+  if(!S || S.phase==='menu' || S.over){ $('hud').innerHTML=''; $('hudR').innerHTML=''; return; }
+  const ph = {boarding:'ПОСАДКА (Y — ВЗЛЁТ)', takeoff:'ВЗЛЁТ', flight:'ПОЛЁТ', landing:'ЗАХОД НА ПОСАДКУ'}[S.phase]||'';
+  $('hud').innerHTML =
+    '<b>'+ph+'</b><br>'+
+    'Скорость: '+Math.round(S.speed)+' км/ч<br>'+
+    'Высота: '+Math.round(S.alt)+' м<br>'+
+    'До аэропорта: '+(S.dist>0? (S.dist/1000).toFixed(1):'0')+' км<br>'+
+    'Двигатели: '+Math.round(S.eng[0])+'% / '+Math.round(S.eng[1])+'%'+((S.fire[0]||S.fire[1])?' 🔥':'')+'<br>'+
+    'Груз: вазы '+(S.vases-S.vasesBroken)+'/'+S.vases;
+  const fk = S.fuel/S.fuelCap, mk=(S.mood==null?100:S.mood)/100;
+  $('hudR').innerHTML =
+    'ТОПЛИВО <div class="bar"><div style="width:'+(fk*100)+'%;background:'+(fk<0.25?'#e63946':'#f2b705')+'"></div></div>'+
+    'НАСТРОЕНИЕ <div class="bar"><div style="width:'+(mk*100)+'%;background:'+(mk<0.4?'#e63946':(mk<0.7?'#f4d35e':'#5ee07a'))+'"></div></div>'+
+    'Экипаж: вы (пилот и всё остальное)';
+  $('prompt').textContent = promptText();
+  $('subtitle').textContent = S.sub;
+  const warn = $('warn');
+  let wt='';
+  if(S.stallWarn>0) wt='СВАЛИВАНИЕ! НАБЕРИТЕ СКОРОСТЬ!';
+  else if(S.fire[0]||S.fire[1]) wt='ПОЖАР ДВИГАТЕЛЯ!';
+  else if(S.fuel<=0) wt='ДВИГАТЕЛИ ОСТАНОВЛЕНЫ!';
+  else if(S.fuel<S.fuelCap*0.25 && S.refuelStage===0) wt='ТОПЛИВО НА ИСХОДЕ!';
+  if(wt){ warn.style.display='block'; warn.textContent=wt; } else warn.style.display='none';
+}
+
+// ============================ ЦИКЛ ============================
+let last = performance.now();
+function loop(now){
+  const dt = Math.min(0.05, (now-last)/1000); last = now;
+  if(S && !S.pause && !S.over){
+    S.time += dt;
+    // буординг: постепенно сажаем пассажиров
+    if(S.phase==='boarding'){
+      S.spawnT -= dt;
+      if(S.spawnT<=0 && S.paxSpawned<12){ S.spawnT=1.4; S.pax[S.paxSpawned].state='calm'; S.paxSpawned++; }
+    }
+    playerUpdate(dt);
+    paxUpdate(dt);
+    if(S.phase!=='menu'){ flightUpdate(dt); }
+    birdsUpdate(dt);
+    refuelUpdate(dt);
+    miscUpdate(dt);
+    draw(); drawRefuel();
+  } else if(S){ draw(); }
+  drawHud();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// ============================ МЕНЮ ============================
+$('gateYes').onclick = ()=>{ audioInit(); sfx.click(); $('gate').style.display='none'; $('menu').style.display='flex'; };
+$('gateNo').onclick   = ()=>{ window.close(); document.body.innerHTML='<h2 style="color:#eef1f4;font-family:Segoe UI">Можно закрыть вкладку.</h2>'; };
+$('btnSolo').onclick  = ()=>{ audioInit(); sfx.click(); $('menu').style.display='none'; newGame(); };
+$('btnResume').onclick= ()=>{ sfx.click(); togglePause(); };
+$('btnQuit').onclick  = ()=>{ sfx.click(); S.pause=false; $('pause').style.display='none'; S.phase='menu'; $('menu').style.display='flex'; S=null; };
+$('btnAgain').onclick = ()=>{ sfx.click(); $('results').style.display='none'; newGame(); };
+$('btnMenu').onclick  = ()=>{ sfx.click(); $('results').style.display='none'; S=null; $('menu').style.display='flex'; };
+</script>
+</body>
+</html>
