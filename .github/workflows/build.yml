@@ -1,9 +1,9 @@
 name: Build Windows x64
 
+# Unity-сборка больше не запускается автоматически (нужна лицензия Unity;
+# основная версия игры теперь браузерная — см. pages.yml). Запуск вручную:
+# Actions → Build Windows x64 → Run workflow.
 on:
-  push:
-    branches: [main]
-    tags: ['v*']
   workflow_dispatch:
 
 jobs:
