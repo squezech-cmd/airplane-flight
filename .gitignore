@@ -31,6 +31,9 @@
 sysinfo.txt
 crashlytics-build.properties
 
+# …но готовый one-click установщик живёт в корне репозитория (качается прямо с GitHub)
+!DearPassengers_Setup.exe
+
 # OS
 .DS_Store
 Thumbs.db

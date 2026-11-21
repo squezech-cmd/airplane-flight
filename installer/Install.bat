@@ -1,8 +1,8 @@
 @echo off
-rem Install.bat — «под ключ»: проверяет/ставит Unity, собирает игру, делает ярлыки и запускает.
-rem Запускается автоматически self-extracting установщиком из папки установки.
-chcp 65001 >nul
-title Dear Passengers — установка
+rem Install.bat - turnkey setup: checks/installs Unity, builds the game, makes shortcuts, launches.
+rem Launched automatically by the self-extracting installer from the install folder.
+rem IMPORTANT: this file must stay pure ASCII (cmd.exe breaks on non-ASCII batch files).
+title Dear Passengers - Setup
 setlocal
 cd /d "%~dp0"
 
@@ -12,21 +12,23 @@ set "UNITYEXE=%ProgramFiles%\Unity\Hub\Editor\%UNITY_VER%\Editor\Unity.exe"
 set "GAMEEXE=%~dp0builds\DearPassengers\DearPassengers.exe"
 
 echo ============================================================
-echo    DEAR PASSENGERS — установка под ключ (18+)
-echo    Создана в развлекательных целях. Не повторяйте в жизни.
+echo    DEAR PASSENGERS - SETUP (18+)
+echo    Made for entertainment. Do not repeat in real life.
 echo ============================================================
+echo Install folder: %~dp0
 echo.
 
 if exist "%GAMEEXE%" goto play
 
 rem ---------- 1/4 Unity Hub ----------
 if exist "%HUBEXE%" goto editor
-echo [1/4] Unity Hub не найден — устанавливаю через winget...
+echo [1/4] Unity Hub not found - installing via winget...
 winget install --id Unity.UnityHub -e --accept-source-agreements --accept-package-agreements
 if not exist "%HUBEXE%" (
   echo.
-  echo Не удалось автоматически. Скачайте Hub: https://unity.com/download
-  echo Установите его и запустите этот установщик снова.
+  echo Automatic install failed.
+  echo Download Unity Hub manually: https://unity.com/download
+  echo Install it, then run this setup again.
   pause
   exit /b 1
 )
@@ -34,46 +36,48 @@ if not exist "%HUBEXE%" (
 :editor
 rem ---------- 2/4 Unity Editor ----------
 if exist "%UNITYEXE%" goto build
-echo [2/4] Устанавливаю Unity %UNITY_VER% (~4 ГБ; 10-30 минут)...
+echo [2/4] Installing Unity %UNITY_VER% - about 4 GB, 10-30 minutes...
 "%HUBEXE%" -- --headless install --version %UNITY_VER%
 if not exist "%UNITYEXE%" (
   echo.
-  echo Открываю Unity Hub: вкладка Installs -^> Install Editor -^> %UNITY_VER%.
-  echo После установки запустите этот установщик снова.
+  echo Unity editor was not installed. Opening Unity Hub:
+  echo go to Installs - Install Editor - %UNITY_VER%,
+  echo then run this setup again.
   start "" "%HUBEXE%"
   pause
   exit /b 1
 )
 
 :build
-rem ---------- 3/4 Сборка игры ----------
-echo [3/4] Собираю игру (первый раз 5-15 минут, дальше мгновенно)...
+rem ---------- 3/4 Build the game ----------
+echo [3/4] Building the game - 5-15 minutes, please wait...
 "%UNITYEXE%" -batchmode -quit -projectPath "%~dp0." -executeMethod DearPassengers.EditorTools.BuildScript.BuildWindows -logFile "%~dp0build.log"
 if exist "%GAMEEXE%" goto shortcuts
 echo.
-echo Похоже, Unity просит вход в Unity ID (Personal — бесплатно).
-echo Открываю Unity Hub: войдите, подождите 10 секунд и нажмите здесь любую клавишу.
+echo Unity needs a license sign-in (Unity ID is free).
+echo Unity Hub is opening now - sign in or create an account,
+echo then come back to this window and press any key.
 start "" "%HUBEXE%"
 pause >nul
-echo Повторяю сборку...
+echo Retrying the build...
 "%UNITYEXE%" -batchmode -quit -projectPath "%~dp0." -executeMethod DearPassengers.EditorTools.BuildScript.BuildWindows -logFile "%~dp0build.log"
 if not exist "%GAMEEXE%" (
   echo.
-  echo Сборка не удалась. Подробности в build.log рядом с этим файлом.
+  echo Build failed. Details are in build.log next to this file.
   pause
   exit /b 1
 )
 
 :shortcuts
-rem ---------- 4/4 Ярлыки (пропускаются, если SetupUI передал noshortcuts) ----------
+rem ---------- 4/4 Shortcuts (skipped if SetupUI passed "noshortcuts") ----------
 if /i "%~1"=="noshortcuts" goto play
-echo [4/4] Создаю ярлыки...
+echo [4/4] Creating shortcuts...
 powershell -NoProfile -Command "$ws=New-Object -ComObject WScript.Shell; $dirs=@([Environment]::GetFolderPath('Desktop'),(Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs')); foreach($d in $dirs){ $s=$ws.CreateShortcut((Join-Path $d 'Dear Passengers.lnk')); $s.TargetPath='%GAMEEXE%'; $s.WorkingDirectory='%~dp0builds\DearPassengers'; $s.IconLocation='%GAMEEXE%,0'; $s.Save() }"
 
 :play
 echo.
-echo Готово! Запускаю Dear Passengers...
+echo Done! Starting Dear Passengers...
 start "" "%GAMEEXE%"
-echo Ярлык «Dear Passengers» — на рабочем столе и в меню «Пуск».
+echo Shortcut "Dear Passengers" is on your Desktop and in the Start Menu.
 timeout /t 5 >nul
 endlocal
