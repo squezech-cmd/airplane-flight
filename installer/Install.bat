@@ -1,5 +1,5 @@
 @echo off
-rem Install.bat - turnkey setup: finds/installs Unity, builds the game, makes shortcuts, launches.
+rem Install.bat - turnkey setup: finds/installs Unity Hub and editor, builds the game, launches.
 rem Launched automatically by the self-extracting installer from the install folder.
 rem IMPORTANT: keep this file pure ASCII - cmd.exe breaks on non-ASCII batch files.
 title Dear Passengers - Setup
@@ -19,23 +19,25 @@ echo.
 
 if exist "!GAMEEXE!" goto play
 
-rem ---------- 1/4 locate Unity Hub (Program Files or per-user LocalAppData) ----------
+rem ---------- 1/4 locate Unity Hub anywhere on this PC ----------
 set "HUBEXE="
-if exist "%ProgramFiles%\Unity Hub\Unity Hub.exe" set "HUBEXE=%ProgramFiles%\Unity Hub\Unity Hub.exe"
-if not defined HUBEXE if exist "%LocalAppData%\Programs\Unity Hub\Unity Hub.exe" set "HUBEXE=%LocalAppData%\Programs\Unity Hub\Unity Hub.exe"
-
-if defined HUBEXE goto hub_ok
-echo [1/4] Unity Hub not found - installing via winget...
-winget install --id Unity.UnityHub -e --accept-source-agreements --accept-package-agreements
-if exist "%LocalAppData%\Programs\Unity Hub\Unity Hub.exe" set "HUBEXE=%LocalAppData%\Programs\Unity Hub\Unity Hub.exe"
-if not defined HUBEXE if exist "%ProgramFiles%\Unity Hub\Unity Hub.exe" set "HUBEXE=%ProgramFiles%\Unity Hub\Unity Hub.exe"
-
-:hub_ok
+call :find_hub
 if defined HUBEXE goto hub_found
+
+echo [1/4] Unity Hub is not installed - reinstalling via winget...
+winget install --id Unity.UnityHub -e --force --accept-source-agreements --accept-package-agreements
+call :find_hub
+if defined HUBEXE goto hub_found
+
+echo [1/4] Downloading Unity Hub directly from unity.com (~100 MB)...
+powershell -NoProfile -Command "$u=$env:TEMP+'\UnityHubSetup.exe'; [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.exe' -OutFile $u; if(Test-Path -LiteralPath $u){ Start-Process -FilePath $u -ArgumentList '/S' -Wait }"
+call :find_hub
+if defined HUBEXE goto hub_found
+
 echo.
-echo Unity Hub was not found and could not be installed automatically.
-echo Download it manually: https://unity.com/download
-echo Install it, then run this setup again.
+echo Unity Hub could not be found or installed automatically.
+echo Please install it manually: https://unity.com/download
+echo then run this setup again.
 pause
 exit /b 1
 
@@ -107,6 +109,12 @@ echo Shortcut "Dear Passengers" is on your Desktop and in the Start Menu.
 timeout /t 5 >nul
 endlocal
 exit /b 0
+
+rem ================= subroutine: find Unity Hub (whole PC) =================
+:find_hub
+set "HUBEXE="
+for /f "usebackq delims=" %%i in (`powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0FindUnity.ps1"`) do if not defined HUBEXE set "HUBEXE=%%i"
+goto :eof
 
 rem ================= subroutine: find the Unity editor =================
 :find_unity
