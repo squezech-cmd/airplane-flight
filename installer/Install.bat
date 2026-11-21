@@ -65,7 +65,8 @@ if not exist "%GAMEEXE%" (
 )
 
 :shortcuts
-rem ---------- 4/4 Ярлыки ----------
+rem ---------- 4/4 Ярлыки (пропускаются, если SetupUI передал noshortcuts) ----------
+if /i "%~1"=="noshortcuts" goto play
 echo [4/4] Создаю ярлыки...
 powershell -NoProfile -Command "$ws=New-Object -ComObject WScript.Shell; $dirs=@([Environment]::GetFolderPath('Desktop'),(Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs')); foreach($d in $dirs){ $s=$ws.CreateShortcut((Join-Path $d 'Dear Passengers.lnk')); $s.TargetPath='%GAMEEXE%'; $s.WorkingDirectory='%~dp0builds\DearPassengers'; $s.IconLocation='%GAMEEXE%,0'; $s.Save() }"
 

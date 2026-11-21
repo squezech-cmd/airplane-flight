@@ -27,31 +27,25 @@ INSTALL_TITLE = "Dear Passengers"
 
 
 def config_text(mode: str) -> str:
-    """Конфигурация 7zSD-модуля."""
+    """Конфигурация 7zSD-модуля: распаковка во временную папку и запуск
+    графического установщика (SetupUI.bat → SetupUI.ps1) с выбором диска/папки."""
     if mode == "game":
-        # Игра уже собрана: распаковать и запустить.
+        # Игра уже собрана: распаковать и запустить GUI-установщик.
         return (
             ";!@Install@!UTF-8!\n"
             f'Title="{INSTALL_TITLE}"\n'
-            'BeginPrompt="Установить и запустить Dear Passengers? '
-            '(18+ | Создана в развлекательных целях. Не повторяйте в реальной жизни.)"\n'
-            'RunProgram="GameSetup.bat"\n'
-            'InstallPath="%LOCALAPPDATA%\\\\DearPassengers"\n'
-            'ExtractDialogText="Распаковка Dear Passengers…"\n'
-            'GUIMode="2"\n'
+            'BeginPrompt="Установить Dear Passengers? (18+ | Создана в развлекательных целях. Не повторяйте в реальной жизни.)"\n'
+            'RunProgram="SetupUI.bat"\n'
+            'GUIMode="1"\n'
             ";!@InstallEnd@!\n"
         )
     # Исходники: распаковать и собрать силами Unity на машине игрока.
     return (
         ";!@Install@!UTF-8!\n"
         f'Title="{INSTALL_TITLE} — установка"\n'
-        'BeginPrompt="Установить Dear Passengers (18+)?\n'
-        "Файлы будут распакованы, при необходимости поставится Unity 2022.3 (нужен один вход в Unity ID),\\n"
-        'затем игра соберётся и запустится."\n'
-        'RunProgram="Install.bat"\n'
-        'InstallPath="%LOCALAPPDATA%\\\\DearPassengers"\n'
-        'ExtractDialogText="Распаковка Dear Passengers…"\n'
-        'GUIMode="2"\n'
+        'BeginPrompt="Установить Dear Passengers? (18+ | Создана в развлекательных целях. Не повторяйте в реальной жизни.)"\n'
+        'RunProgram="SetupUI.bat"\n'
+        'GUIMode="1"\n'
         ";!@InstallEnd@!\n"
     )
 

@@ -47,7 +47,7 @@ jobs:
       - name: Create one-click installer
         run: |
           pip install py7zr
-          cp installer/GameSetup.bat builds/
+          cp installer/SetupUI.ps1 installer/SetupUI.bat builds/
           python3 installer/make_setup.py --mode game --payload builds --out DearPassengers_Setup.exe
 
       # 4) Артефакт (доступен на каждой сборке, даже без релиза).
