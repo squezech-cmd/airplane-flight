@@ -71,6 +71,21 @@
 
 Без них workflow упадёт на шаге активации лицензии — это ограничение Unity, а не проекта.
 
+### Публикация в отдельный репозиторий
+
+Если вы разворачиваете этот проект в собственный репозиторий (например `dear-passengers`):
+
+1. Создайте **пустой** публичный репозиторий на GitHub (без README/.gitignore).
+2. Добавьте секреты `UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD` (см. выше).
+3. Запустите из корня проекта:
+
+```bash
+./publish.sh                          # по умолчанию → squezech-cmd/dear-passengers
+./publish.sh git@github.com:you/dear-passengers.git   # или свой адрес
+```
+
+Скрипт отправит код в `main` и тег `v1.0.0` — Actions соберёт `.exe` и создаст Release.
+
 ## Структура проекта
 
 ```
