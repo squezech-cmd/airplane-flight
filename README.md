@@ -8,10 +8,13 @@
 
 ### **→ https://squezech-cmd.github.io/airplane-flight/**
 
+> Если ссылка не открывается — GitHub Pages ещё не включён: **Settings → Pages → Source: GitHub Actions** (один переключатель), деплой запустится автоматически.
+
 Хотите офлайн-копию? Скачайте один файл и откройте двойным кликом в любом браузере
 (Chrome, Edge, Firefox, Opera — что угодно):
 
-- **Скачать игру:** [DearPassengers.html](https://github.com/squezech-cmd/airplane-flight/releases/download/v1.1.1/DearPassengers.html) (релиз v1.1.1, 46 КБ)
+- **Скачать игру:** откройте [DearPassengers.html](https://github.com/squezech-cmd/airplane-flight/blob/main/DearPassengers.html)
+  и нажмите кнопку **«Download raw file»** (стрелка вниз справа) — потом двойной клик по файлу
 
 Один файл = вся игра: Canvas 2D, процедурный звук через WebAudio, ноль зависимостей,
 работает даже без интернета (после скачивания). Та же игра, что в Unity-версии, но 2D и
