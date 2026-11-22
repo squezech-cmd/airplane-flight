@@ -33,4 +33,9 @@ public class JetpackMod {
     public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         ThrustState.setThrusting(event.getEntity(), false);
     }
+
+    @SubscribeEvent
+    public void onRegisterCommands(net.minecraftforge.event.RegisterCommandsEvent event) {
+        com.jetpack.command.VoiceCommands.register(event.getDispatcher());
+    }
 }

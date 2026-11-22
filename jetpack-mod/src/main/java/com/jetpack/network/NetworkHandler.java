@@ -26,5 +26,15 @@ public final class NetworkHandler {
 
         INSTANCE.registerMessage(nextId(), ThrustPacket.class,
                 ThrustPacket::encode, ThrustPacket::new, ThrustPacket::handle);
+        INSTANCE.registerMessage(nextId(), VoiceFramePacket.class,
+                VoiceFramePacket::encode, VoiceFramePacket::new, VoiceFramePacket::handle);
+        INSTANCE.registerMessage(nextId(), VoiceSettingsPacket.class,
+                VoiceSettingsPacket::encode, VoiceSettingsPacket::new, VoiceSettingsPacket::handle);
+        INSTANCE.registerMessage(nextId(), VoicePacket.class,
+                VoicePacket::encode, VoicePacket::new, VoicePacket::handle);
+        INSTANCE.registerMessage(nextId(), VoicePeersPacket.class,
+                VoicePeersPacket::encode, VoicePeersPacket::new, VoicePeersPacket::handle);
+        INSTANCE.registerMessage(nextId(), VoiceOpenPacket.class,
+                VoiceOpenPacket::encode, VoiceOpenPacket::new, VoiceOpenPacket::handle);
     }
 }
