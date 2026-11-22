@@ -1,6 +1,7 @@
 package com.jetpack;
 
 import com.jetpack.network.NetworkHandler;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -24,7 +25,7 @@ public class JetpackMod {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(ForgeRegistries.CREATIVE_MODE_TABS, MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), MOD_ID);
 
     public static final RegistryObject<Item> JETPACK = ITEMS.register("jetpack", JetpackItem::new);
 

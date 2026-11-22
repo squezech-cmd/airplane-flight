@@ -8,7 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -22,7 +22,7 @@ public class JetpackItem extends ArmorItem {
     private static final String FUEL_TAG = "Fuel";
 
     public JetpackItem() {
-        super(ArmorMaterial.DIAMOND, Type.CHESTPLATE, new Item.Properties());
+        super(ArmorMaterials.DIAMOND, Type.CHESTPLATE, new Item.Properties());
     }
 
     public static int getFuel(ItemStack stack) {
@@ -59,9 +59,6 @@ public class JetpackItem extends ArmorItem {
                 serverLevel.sendParticles(ParticleTypes.FLAME,
                         player.getX(), player.getY() + 0.4, player.getZ(),
                         3, 0.15, 0.1, 0.15, 0.05);
-                serverLevel.sendParticles(ParticleTypes.SMOKE_NORMAL,
-                        player.getX(), player.getY() + 0.3, player.getZ(),
-                        1, 0.1, 0.05, 0.1, 0.02);
             }
             if (player.tickCount % 8 == 0) {
                 level.playSound(null, player.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST,
