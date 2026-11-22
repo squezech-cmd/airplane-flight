@@ -1,6 +1,6 @@
 package com.jetpack.item;
 
-import com.jetpack.registry.ModRegistry;
+import com.jetpack.registry.ChristmasItems;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -39,6 +39,6 @@ public final class FrostTier implements Tier {
 
     @Override
     public Ingredient getRepairIngredient() {
-        return Ingredient.of(Items.PACKED_ICE, ModRegistry.ICE_SHARD.get());
+        return Ingredient.of(Items.PACKED_ICE, ChristmasItems.ICE_SHARD.get());
     }
 }
