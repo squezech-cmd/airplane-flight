@@ -31,7 +31,20 @@ jobs:
 
       - name: Build mod
         working-directory: jetpack-mod
-        run: gradle build --no-daemon --stacktrace
+        run: |
+          set +e
+          gradle build --no-daemon --stacktrace > build-output.txt 2>&1
+          code=$?
+          tail -n 150 build-output.txt
+          exit $code
+
+      - name: Report build failure
+        if: failure()
+        run: |
+          tail -n 200 jetpack-mod/build-output.txt > failure.txt 2>/dev/null || echo "No build output captured." > failure.txt
+          gh issue create --title "Jetpack build failed (run ${{ github.run_id }})" --body-file failure.txt || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
