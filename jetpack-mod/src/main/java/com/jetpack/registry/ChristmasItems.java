@@ -11,7 +11,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.Tiers;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public final class ChristmasItems {
             ChatFormatting.GOLD, "Rings when the wind picks up.");
     public static final RegistryObject<Item> TINSEL = decor("tinsel", Rarity.COMMON,
             ChatFormatting.LIGHT_PURPLE, "Shiny strands for the tree.");
-    public static final RegistryObject<Item> FAIRY_LIGHTS = decor("fairy_lights", Rarity.COMMON,
+    public static final RegistryObject<Item> STRING_LIGHTS = decor("string_lights", Rarity.COMMON,
             ChatFormatting.YELLOW, "A string of tiny warm bulbs.");
     public static final RegistryObject<Item> GINGERBREAD_MAN = decor("gingerbread_man", Rarity.COMMON,
             ChatFormatting.GOLD, "Baked with extra icing buttons.");

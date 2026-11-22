@@ -1,6 +1,1 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "jetpack:item/fairy_lights"
-  }
-}
+{ "parent": "jetpack:block/fairy_lights" }
