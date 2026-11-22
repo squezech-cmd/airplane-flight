@@ -48,6 +48,51 @@ wrap it up again.
 | **Snow Globe** | 8 glass + snowball | Right-click for a private snowstorm |
 | **Festive Firework** | paper + firework star | Random red/green/gold/ice-blue bursts |
 
+## The full Christmas catalogue (52 items)
+
+**Decorations** — snowflake, jingle bell, tinsel, fairy lights, gingerbread man,
+gingerbread house, nutcracker, rocking horse, toy train, little drum, stocking,
+mitten, three glass baubles, star garland.
+
+**Sweets** — peppermint candy, candy apple, chocolate bar, gingerbread cookie,
+Christmas pudding, fruitcake, roasted chestnuts (speed), marshmallow, Christmas
+cake (regeneration), sugar plum (night vision), snow cone (fire resistance),
+sweet cane, marzipan pig, yule log (resistance).
+
+**Hot drinks** — eggnog (health boost), mulled cider (resistance), peppermint tea
+(night vision), Christmas punch, snowberry smoothie (speed), warm cocoa
+(regeneration).
+
+**Trinkets** — ice shard, frozen heart, snowy pearl, lucky snowball, stardust,
+mistletoe, holly berries, pine cone.
+
+**Frost tools** — a full ice tier between iron and diamond: sword (slows what it
+hits), pickaxe, axe, shovel.
+
+**Materials** — wrapping paper, red bow, gold bow, pine needles, snow dust.
+
+Every one of them has a recipe — 67 in total.
+
+## Grand Christmas Tree
+
+Two blocks tall, five foliage tiers, a light garland, baubles and a glowing star.
+It twinkles, drops glitter and casts light level 12.
+
+## Blizzards
+
+Every few minutes a real blizzard rolls in: dense sideways snow, drifting ground
+particles, gusting wind sounds and a mild chill, announced in chat and gone again
+45 seconds later.
+
+## Animations
+
+- Trees twinkle and shed glitter
+- Fairy lights flicker along the wire
+- Sparkles drift around the player
+- Frosty breath puffs when it snows
+- Shooting stars on clear nights
+- Holly bushes and snow piles shimmer
+
 ## Winter atmosphere
 
 - **Snowfall** follows every player, dense enough to feel wintry
@@ -58,7 +103,7 @@ wrap it up again.
 ## Install
 
 1. Install **Forge 47.2.0+** for Minecraft 1.20.1
-2. Download `jetpack-2.0.0.jar` from the [Releases](../../releases) page
+2. Download `jetpack-2.1.0.jar` from the [Releases](../../releases) page
 3. Put the JAR into the `mods` folder
 4. Launch the game, open the creative inventory and look for the **Jetpack** tabs
 
@@ -68,7 +113,7 @@ wrap it up again.
 gradle build
 ```
 
-The mod JAR is produced at `build/libs/jetpack-2.0.0.jar`.
+The mod JAR is produced at `build/libs/jetpack-2.1.0.jar`.
 
 ## How flight works
 
