@@ -110,6 +110,36 @@ bulbs winding 2.6 times around the trunk, fifteen baubles and a four-armed
 glowing star. Only the trunk is solid, so you can walk under the branches.
 Break any part and the whole tree comes down, but it only drops one item.
 
+## Voice chat
+
+Proximity voice chat, built in, no extra libraries. It opens from the **Voice chat**
+button in the pause menu, from **Left Alt**, or from `/voice`.
+
+- **Push to talk** by default: hold **V** while you play, release to stop
+- Open microphone mode if you would rather not hold a key
+- Your voice carries **32 blocks** by default and fades with distance
+- **Range 8–128 blocks**, adjustable per player
+- **Noise gate** so breathing, fans and keyboards stay off the wire
+- **Microphone picker**, gain with a live level meter, and a monitor button to
+  hear yourself
+- **HUD** shows your microphone level and the names of anyone speaking near you
+- Mute yourself from the screen, or with `/voice mute`
+
+`/voice` opens the settings, `/voice range <8-128>` sets how far you are heard,
+and operators get `/voice mode on|off` and `/voice muteplayer <player>`.
+
+### How the audio travels
+
+The microphone is recorded at 48 kHz, decimated to 16 kHz wideband speech and
+companded with G.711 mu-law. That is 16 KB/s per speaker instead of 96 KB/s of
+raw PCM. The server validates every frame, applies a rate limit, and only relays
+it to players inside the speaker's range, so a busy server keeps up. On the
+receiving side each speaker gets a short queue and a dedicated playback thread:
+during a stutter a frame is dropped rather than everyone falling behind.
+
+Everything is plain Java (`javax.sound.sampled`), so there is nothing to install
+and the mod still loads on a dedicated server.
+
 ## Blizzard commands
 
 Snow and storms are now under your control:
@@ -156,7 +186,7 @@ chat when it starts and when it passes.
 gradle build
 ```
 
-The mod JAR is produced at `build/libs/jetpack-3.0.0.jar`.
+The mod JAR is produced at `build/libs/jetpack-3.1.0.jar`.
 
 ## How flight works
 

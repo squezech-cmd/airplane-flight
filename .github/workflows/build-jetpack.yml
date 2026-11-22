@@ -64,59 +64,75 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jetpack-1.20.1
-          path: jetpack-mod/build/libs/jetpack-3.0.0.jar
+          path: jetpack-mod/build/libs/jetpack-3.1.0.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: jetpack-v3.0.0
-          name: 'Jetpack v3.0.0 (Minecraft 1.20.1 Forge)'
+          tag_name: jetpack-v3.1.0
+          name: 'Jetpack v3.1.0 (Minecraft 1.20.1 Forge)'
           body: |
-            ## Jetpack 3.0.0 — Trees, Decorations & Blizzard Commands
+            ## Jetpack 3.1.0 — Voice Chat
 
-            Big one: the trees were rebuilt from scratch, every decoration became a
-            real block you can place, and the weather is now under your control.
+            Talk to the people around you, in game, with no extra mods and no
+            external libraries. Open the settings with the **Voice chat** button
+            in the pause menu, with **Left Alt**, or with `/voice`.
 
-            ### Three Christmas trees, all rebuilt
-            - **Giant Christmas Tree** — **3 blocks tall**, 186 model elements, eight
-              drooping tiers, a garland of coloured bulbs spiralling 2.6 times around
-              the trunk, fifteen baubles and a four-armed glowing star. Light 14.
-            - **Grand Christmas Tree** — 2 blocks, 128 elements, light 12
-            - **Christmas Tree** — 1 block, light 11
-            - Every tree is a cascade of branch plates with drooping boughs, not a
-              stack of cubes. Only the trunk is solid, so you can walk underneath.
-            - Breaking any part takes the whole tree down and drops a single item.
-            - **The trees were broken before:** `big_christmas_tree` had no crafting
-              recipe at all, and the giant tree's item icon was an invalid model the
-              game refuses to load. Both are fixed.
+            ### How it works
+            - **Push to talk** is the default: hold **V** while you play and
+              release to stop. Switch to an open microphone in the settings if
+              you prefer.
+            - **Proximity based** — your voice carries 32 blocks by default and
+              gets quieter with distance, so a group standing together sounds
+              like a group standing together.
+            - **Hearing range** is adjustable from 8 to 128 blocks, and everyone
+              sees who is close enough to talk to.
+            - **A live level meter** shows your microphone in real time, so you
+              can set the gain without guessing.
+            - **The HUD** shows when you are transmitting and who is speaking
+              near you.
 
-            ### Eleven decorations you can actually place
-            Toy train, little drum, rocking horse, nutcracker, gingerbread man,
-            gingerbread house, stocking, mitten, jingle bell, box of baubles and a
-            jar of candy. Each one is a detailed 3D model with its own collision
-            box, facing direction, light level and idle particles — and each still
-            has its crafting recipe.
+            ### Settings screen
+            | Setting | What it does |
+            | --- | --- |
+            | Voice chat on/off | master switch |
+            | Push to talk / open mic | how the microphone is triggered |
+            | Microphone on/off | manual override |
+            | Mic gain | 25% to 300%, with a meter next to it |
+            | Range | how far your voice carries, 8–128 blocks |
+            | Volume | how loud you hear everyone else |
+            | Noise gate | below this level nothing is sent, so breathing and fans stay private |
+            | Device | pick which microphone to use |
+            | Monitor | play your own microphone back so you can check how you sound |
+            | HUD | show or hide the corner indicator |
 
-            ### Blizzard commands
+            ### Commands
             | Command | What it does |
             | --- | --- |
-            | `/jetpack blizzard` | start a 45 second blizzard now |
-            | `/jetpack blizzard <seconds>` | 1–600 seconds |
-            | `/jetpack blizzard stop` | end it early |
-            | `/jetpack snow` | toggle the ambient snowfall |
-            | `/jetpack auto on/off` | automatic blizzards every 6 minutes |
+            | `/voice` | open the settings screen |
+            | `/voice mute` / `/voice unmute` | stop or resume hearing everyone |
+            | `/voice range <8–128>` | set how far your voice carries |
+            | `/voice mode on/off` | operator: switch voice chat on the whole server |
+            | `/voice muteplayer <player>` | operator: mute one player |
 
-            ### Everything else from before
-            The jetpack with its 3D back model and fuel gauge, 43 Christmas items,
-            24 blocks, **83 recipes**, presents that pop open, frost tools, and the
-            snowfall, ground frost and rain-turns-to-snow weather.
+            ### Bandwidth
+            Microphone audio is decimated to 16 kHz wideband speech and compressed
+            with G.711 mu-law. That is **16 KB/s per speaker** instead of 96 KB/s of
+            raw audio, and the server only sends a voice frame to players inside the
+            speaker's range. The mod is pure Java: nothing to install, nothing to
+            download at runtime, and it still loads on a dedicated server.
+
+            ### Also in this build
+            Everything from 3.0.0: the three rebuilt Christmas trees, the eleven
+            placeable decorations, the `/jetpack` blizzard commands, 24 blocks and
+            83 recipes.
 
             ### Install
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
-            2. **Delete any older jetpack jar** from the mods folder first
-            3. Put `jetpack-3.0.0.jar` into `mods`
-            4. Launch — hold SPACE to fly, then try `/jetpack blizzard`
-          files: jetpack-mod/build/libs/jetpack-3.0.0.jar
+            2. **Delete any older jetpack jar** from the mods folder
+            3. Put `jetpack-3.1.0.jar` into `mods`
+            4. Launch — hold SPACE to fly, hold V to talk
+          files: jetpack-mod/build/libs/jetpack-3.1.0.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
