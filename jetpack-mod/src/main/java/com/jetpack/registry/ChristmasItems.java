@@ -15,6 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.jetpack.registry.ModRegistry.ITEMS;
 
@@ -83,36 +84,36 @@ public final class ChristmasItems {
             ChatFormatting.GOLD, "Dense, ancient and beloved.", null, 0);
     public static final RegistryObject<Item> ROASTED_CHESTNUTS = sweet("roasted_chestnuts", 6, 0.6F,
             ChatFormatting.GOLD, "Chestnuts roasting on an open fire.",
-            MobEffects.MOVEMENT_SPEED, 20 * 20);
+            () -> MobEffects.MOVEMENT_SPEED, 20 * 20);
     public static final RegistryObject<Item> MARSHMALLOW = sweet("marshmallow", 3, 0.3F,
             ChatFormatting.WHITE, "Squishy, vanilla-scented.", null, 0);
     public static final RegistryObject<Item> CHRISTMAS_CAKE = sweet("christmas_cake", 10, 0.9F,
-            ChatFormatting.RED, "Layered and generous.", MobEffects.REGENERATION, 20 * 6);
+            ChatFormatting.RED, "Layered and generous.", () -> MobEffects.REGENERATION, 20 * 6);
     public static final RegistryObject<Item> SUGAR_PLUM = sweet("sugar_plum", 5, 0.6F,
-            ChatFormatting.LIGHT_PURPLE, "Dances in your head.", MobEffects.NIGHT_VISION, 20 * 20);
+            ChatFormatting.LIGHT_PURPLE, "Dances in your head.", () -> MobEffects.NIGHT_VISION, 20 * 20);
     public static final RegistryObject<Item> SNOW_CONE = sweet("snow_cone", 3, 0.3F,
-            ChatFormatting.AQUA, "Shaved ice in a paper cone.", MobEffects.FIRE_RESISTANCE, 20 * 8);
+            ChatFormatting.AQUA, "Shaved ice in a paper cone.", () -> MobEffects.FIRE_RESISTANCE, 20 * 8);
     public static final RegistryObject<Item> SWEET_CANE = sweet("sweet_cane", 3, 0.4F,
             ChatFormatting.RED, "Striped and sweet.", null, 0);
     public static final RegistryObject<Item> MARZIPAN = sweet("marzipan", 5, 0.6F,
             ChatFormatting.GOLD, "Shaped like a tiny pig.", null, 0);
     public static final RegistryObject<Item> YULE_LOG = sweet("yule_log", 9, 0.8F,
-            ChatFormatting.DARK_RED, "A rolled chocolate log.", MobEffects.DAMAGE_RESISTANCE, 20 * 12);
+            ChatFormatting.DARK_RED, "A rolled chocolate log.", () -> MobEffects.DAMAGE_RESISTANCE, 20 * 12);
 
     // ---------------------------------------------------------------- drinks
 
     public static final RegistryObject<Item> EGGNOG = drink("eggnog", "Thick, rich and spiced.",
-            MobEffects.HEALTH_BOOST, 20 * 30);
+            () -> MobEffects.HEALTH_BOOST, 20 * 30);
     public static final RegistryObject<Item> MULLED_CIDER = drink("mulled_cider", "Apple and cinnamon.",
-            MobEffects.DAMAGE_RESISTANCE, 20 * 20);
+            () -> MobEffects.DAMAGE_RESISTANCE, 20 * 20);
     public static final RegistryObject<Item> PEPPERMINT_TEA = drink("peppermint_tea", "Breathes clear.",
-            MobEffects.NIGHT_VISION, 20 * 25);
+            () -> MobEffects.NIGHT_VISION, 20 * 25);
     public static final RegistryObject<Item> CHRISTMAS_PUNCH = drink("christmas_punch", "Fruit and sparkle.",
-            MobEffects.HUNGER, 20 * 15);
+            () -> MobEffects.HUNGER, 20 * 15);
     public static final RegistryObject<Item> SNOWBERRY_SMOOTHIE = drink("snowberry_smoothie", "Frozen berries.",
-            MobEffects.MOVEMENT_SPEED, 20 * 25);
+            () -> MobEffects.MOVEMENT_SPEED, 20 * 25);
     public static final RegistryObject<Item> WARM_COCOA = drink("warm_cocoa", "Topped with cream.",
-            MobEffects.REGENERATION, 20 * 10);
+            () -> MobEffects.REGENERATION, 20 * 10);
 
     // --------------------------------------------------------------- trinkets
 
@@ -174,24 +175,25 @@ public final class ChristmasItems {
 
     private static RegistryObject<Item> sweet(String name, int nutrition, float saturation,
                                               ChatFormatting colour, String line,
-                                              net.minecraft.world.effect.MobEffect effect, int ticks) {
-        FoodProperties.Builder builder = new FoodProperties.Builder()
-                .nutrition(nutrition)
-                .saturationMod(saturation);
-        if (effect != null && ticks > 0) {
-            builder.effect(new net.minecraft.world.effect.MobEffectInstance(effect, ticks, 0), 1.0F);
-        }
-        RegistryObject<Item> item = ITEMS.register(name, () -> new TooltipItem(
-                new Item.Properties().food(builder.build()), colour, line));
+                                              Supplier<net.minecraft.world.effect.MobEffect> effect, int ticks) {
+        RegistryObject<Item> item = ITEMS.register(name, () -> {
+            FoodProperties.Builder builder = new FoodProperties.Builder()
+                    .nutrition(nutrition)
+                    .saturationMod(saturation);
+            if (effect != null && ticks > 0) {
+                builder.effect(new net.minecraft.world.effect.MobEffectInstance(effect.get(), ticks, 0), 1.0F);
+            }
+            return new TooltipItem(new Item.Properties().food(builder.build()), colour, line);
+        });
         SWEETS.add(item);
         return item;
     }
 
     private static RegistryObject<Item> drink(String name, String line,
-                                              net.minecraft.world.effect.MobEffect effect, int ticks) {
+                                              Supplier<net.minecraft.world.effect.MobEffect> effect, int ticks) {
         RegistryObject<Item> item = ITEMS.register(name, () -> new EffectItem(
                 new Item.Properties().stacksTo(1), ChatFormatting.GOLD, new String[] {line},
-                () -> effect, ticks, null, 0, true));
+                effect, ticks, null, 0, true));
         DRINKS.add(item);
         return item;
     }
