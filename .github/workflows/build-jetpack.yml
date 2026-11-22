@@ -64,22 +64,27 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jetpack-1.20.1
-          path: jetpack-mod/build/libs/jetpack-2.1.0.jar
+          path: jetpack-mod/build/libs/jetpack-2.1.1.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: jetpack-v2.1.0
-          name: 'Jetpack v2.1.0 (Minecraft 1.20.1 Forge)'
+          tag_name: jetpack-v2.1.1
+          name: 'Jetpack v2.1.1 (Minecraft 1.20.1 Forge)'
           body: |
-            ## Jetpack 2.1 — Winter Wonderland (Minecraft 1.20.1 Forge)
+            ## Jetpack 2.1.1 — Winter Wonderland (Minecraft 1.20.1 Forge)
+
+            **Hotfix:** 2.1.0 crashed on startup with
+            `ExceptionInInitializerError: null` because `fairy_lights` was registered
+            twice — once as the wall block and once as a decoration item. That item is
+            now called **String Lights**, and the mod loads cleanly.
 
             The jetpack, plus a whole Christmas world. Everything lives in two creative
             tabs: **Jetpack** and **Jetpack Christmas**.
 
-            ### 61 items, all craftable
-            - **16 decorations**: snowflake, jingle bell, tinsel, fairy lights,
+            ### 71 items, all craftable
+            - **16 decorations**: snowflake, jingle bell, tinsel, string lights,
               gingerbread man and house, nutcracker, rocking horse, toy train, drum,
               stocking, mitten, three glass baubles, star garland
             - **14 sweets**: peppermint candy, candy apple, chocolate bar, gingerbread
@@ -93,9 +98,10 @@ jobs:
             - **5 materials**: wrapping paper, red and gold bows, pine needles, snow dust
             - **67 recipes** in total
 
-            ### Bigger, prettier tree
-            The **Grand Christmas Tree** is two blocks tall with five foliage tiers,
-            a light garland, baubles and a glowing star. It twinkles and drops glitter.
+            ### Blocks
+            Grand Christmas Tree (two blocks tall, twinkling star), Christmas Tree,
+            Snowman, Wreath, Fairy Lights, Holly Bush, Snow Pile, Candy Cane,
+            Snow Lantern and three wrapped presents that pop open when used.
 
             ### Real winter weather
             - **Blizzards** roll in every few minutes: dense sideways snow, gusting wind,
@@ -110,8 +116,9 @@ jobs:
 
             ### Install
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
-            2. Put `jetpack-2.1.0.jar` into the `mods` folder
-            3. Launch the game — hold SPACE to fly, and enjoy the snow
-          files: jetpack-mod/build/libs/jetpack-2.1.0.jar
+            2. **Delete any older jetpack jar** from the mods folder first
+            3. Put `jetpack-2.1.1.jar` into `mods`
+            4. Launch the game — hold SPACE to fly, and enjoy the snow
+          files: jetpack-mod/build/libs/jetpack-2.1.1.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
