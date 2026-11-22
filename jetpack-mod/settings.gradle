@@ -7,3 +7,6 @@ pluginManagement {
         }
     }
 }
+
+// ForgeGradle pulls a couple of Mojang libraries from Mojang's own maven, which
+// occasionally times out. Adding these mirrors first keeps the build reliable.

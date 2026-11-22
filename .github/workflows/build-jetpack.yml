@@ -29,6 +29,12 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.1.1'
+          cache-read-only: false
+
+      - name: Warm dependency cache
+        working-directory: jetpack-mod
+        continue-on-error: true
+        run: gradle :dependencies --no-daemon --refresh-dependencies || true
 
       - name: Build mod
         working-directory: jetpack-mod
