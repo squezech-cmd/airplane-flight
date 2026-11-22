@@ -58,28 +58,37 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jetpack-1.20.1
-          path: jetpack-mod/build/libs/jetpack-1.0.0.jar
+          path: jetpack-mod/build/libs/jetpack-1.1.0.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: jetpack-v1.0.0
-          name: 'Jetpack v1.0.0 (Minecraft 1.20.1 Forge)'
+          tag_name: jetpack-v1.1.0
+          name: 'Jetpack v1.1.0 (Minecraft 1.20.1 Forge)'
           body: |
             ## Jetpack — Minecraft 1.20.1 (Forge)
 
             A cool jetpack mod! Grab the **Jetpack** from the creative inventory
             (tab "Jetpack"), equip it on your chest and hold **SPACE** to fly.
 
-            - Fuel gauge on the item, refuels automatically
-            - Flame particles and rocket sound while flying
-            - Soft landing: no fall damage with the jetpack on
+            ### What's new in 1.1.0
+            - **Flight actually works now** — thrust is applied on the client, so holding
+              SPACE lifts you off the ground and keeps you climbing.
+            - **Brand new 3D model on your back** — twin red fuel tanks, a steel spine
+              plate and two glowing thruster nozzles.
+            - **New textures** for the item and the worn model.
+            - Hold **SHIFT** while flying to descend faster.
+
+            ### Features
+            - Fuel gauge on the item, refuels automatically when the thrusters are off
+            - Flame and smoke particles plus a rocket sound while flying
+            - Soft landing: the jetpack catches you and you never take fall damage
 
             ### Install
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
-            2. Put `jetpack-1.0.0.jar` into the `mods` folder
+            2. Put `jetpack-1.1.0.jar` into the `mods` folder
             3. Launch the game and fly!
-          files: jetpack-mod/build/libs/jetpack-1.0.0.jar
+          files: jetpack-mod/build/libs/jetpack-1.1.0.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
