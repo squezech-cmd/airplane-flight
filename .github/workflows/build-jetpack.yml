@@ -58,44 +58,54 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jetpack-1.20.1
-          path: jetpack-mod/build/libs/jetpack-2.0.0.jar
+          path: jetpack-mod/build/libs/jetpack-2.1.0.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: jetpack-v2.0.0
-          name: 'Jetpack v2.0.0 (Minecraft 1.20.1 Forge)'
+          tag_name: jetpack-v2.1.0
+          name: 'Jetpack v2.1.0 (Minecraft 1.20.1 Forge)'
           body: |
-            ## Jetpack 2.0 — Christmas Edition (Minecraft 1.20.1 Forge)
+            ## Jetpack 2.1 — Winter Wonderland (Minecraft 1.20.1 Forge)
 
-            A jetpack mod plus a full winter wonderland. Grab everything in the
-            creative inventory from the **Jetpack** and **Jetpack Christmas** tabs.
+            The jetpack, plus a whole Christmas world. Everything lives in two creative
+            tabs: **Jetpack** and **Jetpack Christmas**.
 
-            ### New in 2.0
-            - **Jetpack is craftable**: iron + redstone torches + furnace + fire charge
-            - **14 recipes** for every new block and item
-            - **Christmas Tree** with a glowing star topper, ornaments and snow
-            - **Presents** (red / green / gold) — right-click to unwrap a little surprise
-            - **Snowman**, **Wreath**, **Candy Cane**, **Snow Lantern**
-            - **Santa Hat** — a real 3D hat that jingles while worn
-            - **Hot Cocoa** — drink for Night Vision + Speed
-            - **Snow Globe** — shake for a private snowstorm
-            - **Festive Fireworks** — random red/green/gold/ice-blue bursts
+            ### 61 items, all craftable
+            - **16 decorations**: snowflake, jingle bell, tinsel, fairy lights,
+              gingerbread man and house, nutcracker, rocking horse, toy train, drum,
+              stocking, mitten, three glass baubles, star garland
+            - **14 sweets**: peppermint candy, candy apple, chocolate bar, gingerbread
+              cookie, Christmas pudding, fruitcake, roasted chestnuts, marshmallow,
+              Christmas cake, sugar plum, snow cone, sweet cane, marzipan pig, yule log
+            - **6 hot drinks**: eggnog, mulled cider, peppermint tea, Christmas punch,
+              snowberry smoothie, warm cocoa — each with its own buff
+            - **8 trinkets**: ice shard, frozen heart, snowy pearl, lucky snowball,
+              stardust, mistletoe, holly berries, pine cone
+            - **4 frost tools**: sword (chills on hit), pickaxe, axe, shovel
+            - **5 materials**: wrapping paper, red and gold bows, pine needles, snow dust
+            - **67 recipes** in total
 
-            ### Winter atmosphere
-            - Gentle snowfall follows every player
-            - Ground frost slowly paints the world white
-            - During rain, snow replaces the rain and drifts pile up into layers
+            ### Bigger, prettier tree
+            The **Grand Christmas Tree** is two blocks tall with five foliage tiers,
+            a light garland, baubles and a glowing star. It twinkles and drops glitter.
 
-            ### Jetpack
-            Equip it on your chest, hold **SPACE** to fly, **SHIFT** to descend faster.
-            Fuel refills automatically, and you never take fall damage.
+            ### Real winter weather
+            - **Blizzards** roll in every few minutes: dense sideways snow, gusting wind,
+              ground drift and a chill in the air, announced in chat
+            - **Snowfall** follows every player all the time
+            - **Ground frost** slowly paints the world white
+            - **Rain turns into snow** and drifts pile up into layers
+
+            ### Animations
+            Twinkling stars on trees, sparkles wherever you walk, frosty breath when it
+            snows, shooting stars on clear nights, and lights that flicker on their wire.
 
             ### Install
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
-            2. Put `jetpack-2.0.0.jar` into the `mods` folder
-            3. Launch the game and fly!
-          files: jetpack-mod/build/libs/jetpack-2.0.0.jar
+            2. Put `jetpack-2.1.0.jar` into the `mods` folder
+            3. Launch the game — hold SPACE to fly, and enjoy the snow
+          files: jetpack-mod/build/libs/jetpack-2.1.0.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

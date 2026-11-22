@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WCW",
+    "WWW"
+  ],
+  "key": {
+    "W": {
+      "item": "jetpack:gingerbread_cookie"
+    },
+    "C": {
+      "item": "minecraft:cocoa_beans"
+    }
+  },
+  "result": {
+    "item": "jetpack:gingerbread_house",
+    "count": 1
+  }
+}

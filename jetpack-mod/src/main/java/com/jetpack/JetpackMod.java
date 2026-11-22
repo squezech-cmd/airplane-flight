@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 @Mod(JetpackMod.MOD_ID)
 public class JetpackMod {
     public static final String MOD_ID = "jetpack";
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public JetpackMod() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

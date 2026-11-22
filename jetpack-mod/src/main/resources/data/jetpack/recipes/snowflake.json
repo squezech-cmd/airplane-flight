@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NNN",
+    "N N",
+    "NNN"
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:packed_ice"
+    }
+  },
+  "result": {
+    "item": "jetpack:snowflake",
+    "count": 2
+  }
+}

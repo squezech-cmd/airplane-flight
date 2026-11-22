@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "CCC",
+    "SSS"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:wheat"
+    },
+    "C": {
+      "item": "minecraft:cocoa_beans"
+    },
+    "S": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "result": {
+    "item": "jetpack:christmas_pudding",
+    "count": 1
+  }
+}

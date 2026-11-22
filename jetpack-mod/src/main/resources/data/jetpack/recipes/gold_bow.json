@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "YYY",
+    "Y Y",
+    " Y "
+  ],
+  "key": {
+    "Y": {
+      "item": "minecraft:yellow_wool"
+    }
+  },
+  "result": {
+    "item": "jetpack:gold_bow",
+    "count": 2
+  }
+}

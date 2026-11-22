@@ -1,0 +1,623 @@
+{
+  "textures": {
+    "particle": "jetpack:block/christmas_tree_leaves",
+    "leaves": "jetpack:block/christmas_tree_leaves",
+    "trunk": "jetpack:block/christmas_tree_trunk",
+    "star": "jetpack:block/christmas_star_block",
+    "lights": "jetpack:block/christmas_lights"
+  },
+  "elements": [
+    {
+      "from": [
+        6.5,
+        0,
+        6.5
+      ],
+      "to": [
+        9.5,
+        16,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            16
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            16
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            16
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            16
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            3.0
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            3.0
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        }
+      }
+    },
+    {
+      "from": [
+        1.0,
+        1,
+        1.0
+      ],
+      "to": [
+        15.0,
+        6,
+        15.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            14.0,
+            5
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            14.0,
+            5
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            14.0,
+            5
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            14.0,
+            5
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            14.0,
+            14.0
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            14.0,
+            14.0
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        }
+      }
+    },
+    {
+      "from": [
+        2.5,
+        5,
+        2.5
+      ],
+      "to": [
+        13.5,
+        11,
+        13.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            11.0
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            11.0,
+            11.0
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        }
+      }
+    },
+    {
+      "from": [
+        4.0,
+        10,
+        4.0
+      ],
+      "to": [
+        12.0,
+        16,
+        12.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            8.0,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            8.0,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            8.0,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            8.0,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            8.0,
+            8.0
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            8.0,
+            8.0
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        8,
+        2
+      ],
+      "to": [
+        14,
+        8.4,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            12,
+            0.40000000000000036
+          ],
+          "texture": "jetpack:block/christmas_lights"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            12,
+            0.40000000000000036
+          ],
+          "texture": "jetpack:block/christmas_lights"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            12,
+            0.40000000000000036
+          ],
+          "texture": "jetpack:block/christmas_lights"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            12,
+            0.40000000000000036
+          ],
+          "texture": "jetpack:block/christmas_lights"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            12,
+            12
+          ],
+          "texture": "jetpack:block/christmas_lights"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            12,
+            12
+          ],
+          "texture": "jetpack:block/christmas_lights"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        16,
+        6.5
+      ],
+      "to": [
+        9.5,
+        30,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            14
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            14
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            14
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            14
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            3.0
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            3.0
+          ],
+          "texture": "jetpack:block/christmas_tree_trunk"
+        }
+      }
+    },
+    {
+      "from": [
+        3.0,
+        16,
+        3.0
+      ],
+      "to": [
+        13.0,
+        23,
+        13.0
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            10.0,
+            7
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            10.0,
+            7
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            10.0,
+            7
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            10.0,
+            7
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            10.0,
+            10.0
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            10.0,
+            10.0
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        }
+      }
+    },
+    {
+      "from": [
+        4.4,
+        21,
+        4.4
+      ],
+      "to": [
+        11.6,
+        27,
+        11.6
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            7.199999999999999,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            7.199999999999999,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            7.199999999999999,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            7.199999999999999,
+            6
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            7.199999999999999,
+            7.199999999999999
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            7.199999999999999,
+            7.199999999999999
+          ],
+          "texture": "jetpack:block/christmas_tree_leaves"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        29.5,
+        6.5
+      ],
+      "to": [
+        9.5,
+        32,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            2.5
+          ],
+          "texture": "jetpack:block/christmas_star_block"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            2.5
+          ],
+          "texture": "jetpack:block/christmas_star_block"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            2.5
+          ],
+          "texture": "jetpack:block/christmas_star_block"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            2.5
+          ],
+          "texture": "jetpack:block/christmas_star_block"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            3.0
+          ],
+          "texture": "jetpack:block/christmas_star_block"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            3.0,
+            3.0
+          ],
+          "texture": "jetpack:block/christmas_star_block"
+        }
+      }
+    }
+  ]
+}

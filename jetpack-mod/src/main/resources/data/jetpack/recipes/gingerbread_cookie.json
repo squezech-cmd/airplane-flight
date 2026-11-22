@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WW",
+    "WC"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:wheat"
+    },
+    "C": {
+      "item": "minecraft:cocoa_beans"
+    }
+  },
+  "result": {
+    "item": "jetpack:gingerbread_cookie",
+    "count": 4
+  }
+}
