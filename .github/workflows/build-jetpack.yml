@@ -73,52 +73,50 @@ jobs:
           tag_name: jetpack-v3.0.0
           name: 'Jetpack v3.0.0 (Minecraft 1.20.1 Forge)'
           body: |
-            ## Jetpack 2.1.1 — Winter Wonderland (Minecraft 1.20.1 Forge)
+            ## Jetpack 3.0.0 — Trees, Decorations & Blizzard Commands
 
-            **Hotfix:** 2.1.0 crashed on startup with
-            `ExceptionInInitializerError: null` because `fairy_lights` was registered
-            twice — once as the wall block and once as a decoration item. That item is
-            now called **String Lights**, and the mod loads cleanly.
+            Big one: the trees were rebuilt from scratch, every decoration became a
+            real block you can place, and the weather is now under your control.
 
-            The jetpack, plus a whole Christmas world. Everything lives in two creative
-            tabs: **Jetpack** and **Jetpack Christmas**.
+            ### Three Christmas trees, all rebuilt
+            - **Giant Christmas Tree** — **3 blocks tall**, 186 model elements, eight
+              drooping tiers, a garland of coloured bulbs spiralling 2.6 times around
+              the trunk, fifteen baubles and a four-armed glowing star. Light 14.
+            - **Grand Christmas Tree** — 2 blocks, 128 elements, light 12
+            - **Christmas Tree** — 1 block, light 11
+            - Every tree is a cascade of branch plates with drooping boughs, not a
+              stack of cubes. Only the trunk is solid, so you can walk underneath.
+            - Breaking any part takes the whole tree down and drops a single item.
+            - **The trees were broken before:** `big_christmas_tree` had no crafting
+              recipe at all, and the giant tree's item icon was an invalid model the
+              game refuses to load. Both are fixed.
 
-            ### 71 items, all craftable
-            - **16 decorations**: snowflake, jingle bell, tinsel, string lights,
-              gingerbread man and house, nutcracker, rocking horse, toy train, drum,
-              stocking, mitten, three glass baubles, star garland
-            - **14 sweets**: peppermint candy, candy apple, chocolate bar, gingerbread
-              cookie, Christmas pudding, fruitcake, roasted chestnuts, marshmallow,
-              Christmas cake, sugar plum, snow cone, sweet cane, marzipan pig, yule log
-            - **6 hot drinks**: eggnog, mulled cider, peppermint tea, Christmas punch,
-              snowberry smoothie, warm cocoa — each with its own buff
-            - **8 trinkets**: ice shard, frozen heart, snowy pearl, lucky snowball,
-              stardust, mistletoe, holly berries, pine cone
-            - **4 frost tools**: sword (chills on hit), pickaxe, axe, shovel
-            - **5 materials**: wrapping paper, red and gold bows, pine needles, snow dust
-            - **67 recipes** in total
+            ### Eleven decorations you can actually place
+            Toy train, little drum, rocking horse, nutcracker, gingerbread man,
+            gingerbread house, stocking, mitten, jingle bell, box of baubles and a
+            jar of candy. Each one is a detailed 3D model with its own collision
+            box, facing direction, light level and idle particles — and each still
+            has its crafting recipe.
 
-            ### Blocks
-            Grand Christmas Tree (two blocks tall, twinkling star), Christmas Tree,
-            Snowman, Wreath, Fairy Lights, Holly Bush, Snow Pile, Candy Cane,
-            Snow Lantern and three wrapped presents that pop open when used.
+            ### Blizzard commands
+            | Command | What it does |
+            | --- | --- |
+            | `/jetpack blizzard` | start a 45 second blizzard now |
+            | `/jetpack blizzard <seconds>` | 1–600 seconds |
+            | `/jetpack blizzard stop` | end it early |
+            | `/jetpack snow` | toggle the ambient snowfall |
+            | `/jetpack auto on/off` | automatic blizzards every 6 minutes |
 
-            ### Real winter weather
-            - **Blizzards** roll in every few minutes: dense sideways snow, gusting wind,
-              ground drift and a chill in the air, announced in chat
-            - **Snowfall** follows every player all the time
-            - **Ground frost** slowly paints the world white
-            - **Rain turns into snow** and drifts pile up into layers
-
-            ### Animations
-            Twinkling stars on trees, sparkles wherever you walk, frosty breath when it
-            snows, shooting stars on clear nights, and lights that flicker on their wire.
+            ### Everything else from before
+            The jetpack with its 3D back model and fuel gauge, 43 Christmas items,
+            24 blocks, **83 recipes**, presents that pop open, frost tools, and the
+            snowfall, ground frost and rain-turns-to-snow weather.
 
             ### Install
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
             2. **Delete any older jetpack jar** from the mods folder first
             3. Put `jetpack-3.0.0.jar` into `mods`
-            4. Launch the game — hold SPACE to fly, and enjoy the snow
+            4. Launch — hold SPACE to fly, then try `/jetpack blizzard`
           files: jetpack-mod/build/libs/jetpack-3.0.0.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
