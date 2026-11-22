@@ -110,8 +110,13 @@ public final class MicrophoneCapture implements Runnable {
                 if (!shouldTransmit()) {
                     // keep draining the line so the buffer never overflows and
                     // the next word is not half a second late
-                    if (this.line.available() > 0) {
-                        this.line.skip(this.line.available());
+                    int stale = this.line.available();
+                    while (stale > 0) {
+                        int discarded = this.line.read(this.pcm, 0, Math.min(stale, this.pcm.length));
+                        if (discarded <= 0) {
+                            break;
+                        }
+                        stale -= discarded;
                     }
                     sleepQuietly(15);
                     continue;

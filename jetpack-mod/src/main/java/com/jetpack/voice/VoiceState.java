@@ -170,7 +170,10 @@ public final class VoiceState {
             }
             int theirRange = rangeOf(player);
             List<VoicePeersPacket.Peer> peers = new ArrayList<>();
-            for (ServerPlayer other : player.level().players()) {
+            for (ServerPlayer other : PLAYERS.get()) {
+                if (other.level() != player.level()) {
+                    continue;
+                }
                 if (other == player) {
                     continue;
                 }

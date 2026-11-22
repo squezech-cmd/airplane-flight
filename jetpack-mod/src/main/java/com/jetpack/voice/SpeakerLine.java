@@ -115,8 +115,11 @@ public final class SpeakerLine {
 
     private void applyVolume() {
         try {
-            javax.sound.sampled.FloatControl control =
+            javax.sound.sampled.Control raw =
                     this.line.getControl(javax.sound.sampled.FloatControl.Type.MASTER_GAIN);
+            if (!(raw instanceof javax.sound.sampled.FloatControl control)) {
+                return;
+            }
             float dB = this.targetVolume <= 0.0001F
                     ? -80.0F
                     : (float) (20.0D * Math.log10(Math.max(0.0001F, this.targetVolume)));
