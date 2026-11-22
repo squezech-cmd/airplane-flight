@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.Mod;
 public final class JetpackClientSetup {
     public static final ModelLayerLocation JETPACK_LAYER =
             new ModelLayerLocation(new ResourceLocation(JetpackMod.MOD_ID, "jetpack"), "main");
+    public static final ModelLayerLocation SANTA_HAT_LAYER =
+            new ModelLayerLocation(new ResourceLocation(JetpackMod.MOD_ID, "santa_hat"), "main");
 
     private JetpackClientSetup() {
     }
@@ -19,5 +21,6 @@ public final class JetpackClientSetup {
     @SubscribeEvent
     public static void onRegisterLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(JETPACK_LAYER, JetpackModel::createBodyLayer);
+        event.registerLayerDefinition(SANTA_HAT_LAYER, SantaHatModel::createHeadLayer);
     }
 }

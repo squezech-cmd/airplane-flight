@@ -1,4 +1,21 @@
 {
+  "itemGroup.jetpack": "Jetpack",
+  "itemGroup.jetpack.christmas": "Jetpack Christmas",
+
   "item.jetpack.jetpack": "Jetpack",
-  "itemGroup.jetpack": "Jetpack"
+
+  "block.jetpack.christmas_tree": "Christmas Tree",
+  "block.jetpack.gift_red": "Red Present",
+  "block.jetpack.gift_green": "Green Present",
+  "block.jetpack.gift_gold": "Golden Present",
+  "block.jetpack.snow_lantern": "Snow Lantern",
+  "block.jetpack.candy_cane": "Candy Cane",
+  "block.jetpack.snowman": "Snowman",
+  "block.jetpack.wreath": "Christmas Wreath",
+
+  "item.jetpack.christmas_star": "Christmas Star",
+  "item.jetpack.snow_globe": "Snow Globe",
+  "item.jetpack.festive_firework": "Festive Firework",
+  "item.jetpack.hot_cocoa": "Hot Cocoa",
+  "item.jetpack.santa_hat": "Santa Hat"
 }

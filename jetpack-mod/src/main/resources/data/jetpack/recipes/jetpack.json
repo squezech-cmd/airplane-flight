@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ITI",
+    "IFI",
+    "ICI"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "T": { "item": "minecraft:redstone_torch" },
+    "F": { "item": "minecraft:furnace" },
+    "C": { "item": "minecraft:fire_charge" }
+  },
+  "result": { "item": "jetpack:jetpack", "count": 1 }
+}

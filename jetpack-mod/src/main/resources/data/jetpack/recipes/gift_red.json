@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PWP",
+    " P "
+  ],
+  "key": {
+    "P": { "item": "minecraft:paper" },
+    "W": { "item": "minecraft:red_wool" }
+  },
+  "result": { "item": "jetpack:gift_red", "count": 1 }
+}
