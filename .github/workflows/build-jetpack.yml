@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   build:
@@ -36,6 +37,13 @@ jobs:
           gradle build --no-daemon --stacktrace > build-output.txt 2>&1
           code=$?
           tail -n 150 build-output.txt
+          if [ $code -ne 0 ]; then
+            echo "::error::Jetpack build failed with exit code $code"
+            grep -E "FAILURE|What went wrong|Could not|error:|Exception|Caused by|not found|Failed to|command not found" build-output.txt | head -15 | while IFS= read -r line; do
+              esc=$(printf '%s' "$line" | sed 's/%/%25/g')
+              echo "::error::$esc"
+            done
+          fi
           exit $code
 
       - name: Report build failure
