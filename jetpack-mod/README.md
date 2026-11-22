@@ -48,7 +48,28 @@ wrap it up again.
 | **Snow Globe** | 8 glass + snowball | Right-click for a private snowstorm |
 | **Festive Firework** | paper + firework star | Random red/green/gold/ice-blue bursts |
 
-## The full Christmas catalogue (52 items)
+## Decorations you can place
+
+Eleven decorations are **real blocks**, not inventory junk — every one has a
+facing property, its own collision box, a light level and idle particles:
+
+| Block | Shines | Particles |
+| --- | --- | --- |
+| Toy Train | – | golden sparkles |
+| Little Drum | – | – |
+| Rocking Horse | – | – |
+| Nutcracker | 3 | warm motes |
+| Gingerbread Man | – | – |
+| Gingerbread House | 4 | warm motes |
+| Stocking | – | – |
+| Mitten | – | – |
+| Jingle Bell | 7 | golden sparkles |
+| Box of Baubles | – | snow glitter |
+| Jar of Candy | – | golden sparkles |
+
+They rotate to face you when placed, so a shelf of them looks deliberate.
+
+## The full Christmas catalogue
 
 **Decorations** — snowflake, jingle bell, tinsel, fairy lights, gingerbread man,
 gingerbread house, nutcracker, rocking horse, toy train, little drum, stocking,
@@ -71,18 +92,40 @@ hits), pickaxe, axe, shovel.
 
 **Materials** — wrapping paper, red bow, gold bow, pine needles, snow dust.
 
-Every one of them has a recipe — 67 in total.
+Every one of them has a recipe, and so does every block — 83 in total.
 
-## Grand Christmas Tree
+## Three trees, three sizes
 
-Two blocks tall, five foliage tiers, a light garland, baubles and a glowing star.
-It twinkles, drops glitter and casts light level 12.
+Every tree is a cascade of branch plates with drooping boughs, a spiral light
+garland and baubles hanging off the branches — no stacks of cubes.
 
-## Blizzards
+| Tree | Size | Model |
+| --- | --- | --- |
+| **Christmas Tree** | 1 block | 1 part, light 11 |
+| **Grand Christmas Tree** | 2 blocks | 2 parts, light 12 |
+| **Giant Christmas Tree** | **3 blocks** | 3 parts, 186 elements, light 14 |
 
-Every few minutes a real blizzard rolls in: dense sideways snow, drifting ground
-particles, gusting wind sounds and a mild chill, announced in chat and gone again
-45 seconds later.
+The giant tree is the centrepiece: eight drooping tiers, a garland of coloured
+bulbs winding 2.6 times around the trunk, fifteen baubles and a four-armed
+glowing star. Only the trunk is solid, so you can walk under the branches.
+Break any part and the whole tree comes down, but it only drops one item.
+
+## Blizzard commands
+
+Snow and storms are now under your control:
+
+| Command | What it does |
+| --- | --- |
+| `/jetpack snow` | toggle the ambient snowfall on or off |
+| `/jetpack blizzard` | start a 45 second blizzard right now |
+| `/jetpack blizzard <seconds>` | a blizzard of 1–600 seconds |
+| `/jetpack blizzard stop` | end it early |
+| `/jetpack auto on/off` | automatic blizzards every 6 minutes |
+
+Without commands a blizzard still rolls in on its own: first one 30 seconds
+after the world loads, then every six minutes, 45 seconds each. Dense sideways
+snow, drifting ground particles, gusting wind and a mild chill, announced in
+chat when it starts and when it passes.
 
 ## Animations
 
@@ -103,7 +146,7 @@ particles, gusting wind sounds and a mild chill, announced in chat and gone agai
 ## Install
 
 1. Install **Forge 47.2.0+** for Minecraft 1.20.1
-2. Download `jetpack-2.1.0.jar` from the [Releases](../../releases) page
+2. Download the newest `jetpack-3.x.x.jar` from the [Releases](../../releases) page
 3. Put the JAR into the `mods` folder
 4. Launch the game, open the creative inventory and look for the **Jetpack** tabs
 
@@ -113,7 +156,7 @@ particles, gusting wind sounds and a mild chill, announced in chat and gone agai
 gradle build
 ```
 
-The mod JAR is produced at `build/libs/jetpack-2.1.0.jar`.
+The mod JAR is produced at `build/libs/jetpack-3.0.0.jar`.
 
 ## How flight works
 
@@ -127,9 +170,14 @@ is what unlocks that counter.
 Self-contained generators, no external assets:
 
 ```bash
-python3 tools/generate_textures.py            # jetpack item + worn layer
-python3 tools/generate_christmas_textures.py  # everything Christmas
+python3 tools/generate_textures.py             # jetpack item + worn layer
+python3 tools/generate_christmas_textures.py   # item and block textures
+python3 tools/generate_tree_models.py          # the three trees + their textures
+python3 tools/generate_decor_models.py         # the eleven decoration blocks
+python3 tools/preview_tree_models.py           # isometric PNG previews in docs/
 ```
 
-The block models in `assets/jetpack/models/block/` are hand-authored JSON; the UV
-layouts in the texture scripts match the boxes in the models pixel for pixel.
+The models are generated rather than hand-typed: `generate_tree_models.py` builds
+a tree in absolute coordinates, then slices it into per-block parts so no element
+ever exceeds the 32 units the game allows. `preview_tree_models.py` renders the
+result as an isometric PNG before you build, which is how the trees were tuned.
