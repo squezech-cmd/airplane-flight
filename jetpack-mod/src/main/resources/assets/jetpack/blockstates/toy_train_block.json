@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jetpack:block/toy_train_block"
+    },
+    "facing=east": {
+      "model": "jetpack:block/toy_train_block",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jetpack:block/toy_train_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jetpack:block/toy_train_block",
+      "y": 270
+    }
+  }
+}

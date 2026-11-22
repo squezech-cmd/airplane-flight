@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "part=0": {
+      "model": "jetpack:block/giant_christmas_tree_0"
+    },
+    "part=1": {
+      "model": "jetpack:block/giant_christmas_tree_1"
+    },
+    "part=2": {
+      "model": "jetpack:block/giant_christmas_tree_2"
+    }
+  }
+}

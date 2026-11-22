@@ -4,6 +4,8 @@ import com.jetpack.JetpackItem;
 import com.jetpack.JetpackMod;
 import com.jetpack.block.BigChristmasTreeBlock;
 import com.jetpack.block.ChristmasTreeBlock;
+import com.jetpack.block.DecorBlock;
+import com.jetpack.block.GiantChristmasTreeBlock;
 import com.jetpack.block.FairyLightBlock;
 import com.jetpack.block.GiftBlock;
 import com.jetpack.block.HollyBushBlock;
@@ -81,6 +83,39 @@ public final class ModRegistry {
                     .sound(SoundType.GRASS)
                     .lightLevel(state -> 12)
                     .noOcclusion()));
+
+    public static final RegistryObject<Block> GIANT_CHRISTMAS_TREE = registerBlock("giant_christmas_tree",
+            () -> new GiantChristmasTreeBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
+                    .strength(1.4F)
+                    .sound(SoundType.GRASS)
+                    .lightLevel(state -> 14)
+                    .noOcclusion()));
+
+    // ---- decorative furniture: these used to be inventory-only items ----
+
+    public static final RegistryObject<Block> TOY_TRAIN_BLOCK = registerDecor("toy_train_block",
+            DecorBlock.box(0, 0, 2, 16, 9, 14), DecorBlock.Flavour.SPARKLE, 0);
+    public static final RegistryObject<Block> DRUM_BLOCK = registerDecor("drum_block",
+            DecorBlock.box(3, 0, 3, 13, 11, 13), DecorBlock.Flavour.NONE, 0);
+    public static final RegistryObject<Block> ROCKING_HORSE_BLOCK = registerDecor("rocking_horse_block",
+            DecorBlock.box(1, 0, 3, 15, 13, 13), DecorBlock.Flavour.NONE, 0);
+    public static final RegistryObject<Block> NUTCRACKER_BLOCK = registerDecor("nutcracker_block",
+            DecorBlock.box(3, 0, 4, 13, 16, 12), DecorBlock.Flavour.DUST, 3);
+    public static final RegistryObject<Block> GINGERBREAD_MAN_BLOCK = registerDecor("gingerbread_man_block",
+            DecorBlock.box(3, 0, 5, 13, 15, 11), DecorBlock.Flavour.NONE, 0);
+    public static final RegistryObject<Block> GINGERBREAD_HOUSE_BLOCK = registerDecor("gingerbread_house_block",
+            DecorBlock.box(1, 0, 2, 15, 14, 14), DecorBlock.Flavour.DUST, 4);
+    public static final RegistryObject<Block> STOCKING_BLOCK = registerDecor("stocking_block",
+            DecorBlock.box(4, 0, 6, 12, 14, 11), DecorBlock.Flavour.NONE, 0);
+    public static final RegistryObject<Block> MITTEN_BLOCK = registerDecor("mitten_block",
+            DecorBlock.box(4, 0, 6, 12, 12, 11), DecorBlock.Flavour.NONE, 0);
+    public static final RegistryObject<Block> BELL_BLOCK = registerDecor("bell_block",
+            DecorBlock.box(5, 0, 5, 11, 9, 11), DecorBlock.Flavour.SPARKLE, 7);
+    public static final RegistryObject<Block> BAUBLE_PILE_BLOCK = registerDecor("bauble_pile_block",
+            DecorBlock.box(2, 0, 2, 14, 9, 14), DecorBlock.Flavour.GLITTER, 0);
+    public static final RegistryObject<Block> CANDY_JAR_BLOCK = registerDecor("candy_jar_block",
+            DecorBlock.box(4, 0, 4, 12, 12, 12), DecorBlock.Flavour.SPARKLE, 0);
 
     public static final RegistryObject<Block> GIFT_RED = registerBlock("gift_red",
             () -> new GiftBlock(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)
@@ -169,6 +204,7 @@ public final class ModRegistry {
                     .icon(() -> new ItemStack(CHRISTMAS_TREE.get()))
                     .displayItems((params, output) -> {
                         // Blocks first, in a tidy grid.
+                        output.accept(GIANT_CHRISTMAS_TREE.get());
                         output.accept(BIG_CHRISTMAS_TREE.get());
                         output.accept(CHRISTMAS_TREE.get());
                         output.accept(SNOWMAN.get());
@@ -181,6 +217,19 @@ public final class ModRegistry {
                         output.accept(GIFT_RED.get());
                         output.accept(GIFT_GREEN.get());
                         output.accept(GIFT_GOLD.get());
+
+                        // Decorative furniture.
+                        output.accept(TOY_TRAIN_BLOCK.get());
+                        output.accept(DRUM_BLOCK.get());
+                        output.accept(ROCKING_HORSE_BLOCK.get());
+                        output.accept(NUTCRACKER_BLOCK.get());
+                        output.accept(GINGERBREAD_MAN_BLOCK.get());
+                        output.accept(GINGERBREAD_HOUSE_BLOCK.get());
+                        output.accept(STOCKING_BLOCK.get());
+                        output.accept(MITTEN_BLOCK.get());
+                        output.accept(BELL_BLOCK.get());
+                        output.accept(BAUBLE_PILE_BLOCK.get());
+                        output.accept(CANDY_JAR_BLOCK.get());
 
                         // Signature items.
                         output.accept(CHRISTMAS_STAR.get());
@@ -200,6 +249,22 @@ public final class ModRegistry {
                     .build());
 
     private ModRegistry() {
+    }
+
+    /** Registers a decoration block plus its item, with an optional glow. */
+    private static RegistryObject<Block> registerDecor(String name,
+                                                       net.minecraft.world.phys.shapes.VoxelShape shape,
+                                                       DecorBlock.Flavour flavour, int light) {
+        RegistryObject<Block> registered = BLOCKS.register(name, () -> new DecorBlock(
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.WOOD)
+                        .strength(0.5F)
+                        .sound(flavour == DecorBlock.Flavour.NONE ? SoundType.WOOD : SoundType.AMETHYST)
+                        .lightLevel(state -> light)
+                        .noOcclusion(),
+                shape, flavour));
+        ITEMS.register(name, () -> new BlockItem(registered.get(), new Item.Properties()));
+        return registered;
     }
 
     /** Registers a block together with its matching block item. */

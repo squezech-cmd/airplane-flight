@@ -37,28 +37,10 @@ public final class ChristmasItems {
 
     public static final RegistryObject<Item> SNOWFLAKE = decor("snowflake", Rarity.COMMON,
             ChatFormatting.AQUA, "A perfect six-armed crystal.");
-    public static final RegistryObject<Item> BELL = decor("bell", Rarity.COMMON,
-            ChatFormatting.GOLD, "Rings when the wind picks up.");
     public static final RegistryObject<Item> TINSEL = decor("tinsel", Rarity.COMMON,
             ChatFormatting.LIGHT_PURPLE, "Shiny strands for the tree.");
     public static final RegistryObject<Item> STRING_LIGHTS = decor("string_lights", Rarity.COMMON,
             ChatFormatting.YELLOW, "A string of tiny warm bulbs.");
-    public static final RegistryObject<Item> GINGERBREAD_MAN = decor("gingerbread_man", Rarity.COMMON,
-            ChatFormatting.GOLD, "Baked with extra icing buttons.");
-    public static final RegistryObject<Item> GINGERBREAD_HOUSE = decor("gingerbread_house", Rarity.UNCOMMON,
-            ChatFormatting.GOLD, "A whole house of gingerbread.");
-    public static final RegistryObject<Item> NUTCRACKER = decor("nutcracker", Rarity.UNCOMMON,
-            ChatFormatting.RED, "Stands guard by the fireplace.");
-    public static final RegistryObject<Item> ROCKING_HORSE = decor("rocking_horse", Rarity.COMMON,
-            ChatFormatting.GOLD, "A hand-carved wooden toy.");
-    public static final RegistryObject<Item> TOY_TRAIN = decor("toy_train", Rarity.UNCOMMON,
-            ChatFormatting.DARK_RED, "Chuffs happily around the tree.");
-    public static final RegistryObject<Item> DRUM = decor("drum", Rarity.COMMON,
-            ChatFormatting.RED, "A little tin drum.");
-    public static final RegistryObject<Item> STOCKING = decor("stocking", Rarity.COMMON,
-            ChatFormatting.RED, "Hung by the chimney with care.");
-    public static final RegistryObject<Item> MITTEN = decor("mitten", Rarity.COMMON,
-            ChatFormatting.RED, "Knitted by a very patient grandmother.");
     public static final RegistryObject<Item> BAUBLE_RED = decor("bauble_red", Rarity.COMMON,
             ChatFormatting.RED, "A glass bauble, ruby red.");
     public static final RegistryObject<Item> BAUBLE_GOLD = decor("bauble_gold", Rarity.COMMON,

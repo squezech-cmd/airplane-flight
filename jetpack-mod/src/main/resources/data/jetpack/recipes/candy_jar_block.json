@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "G G",
+    "GCG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "C": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "result": {
+    "item": "jetpack:candy_jar_block",
+    "count": 1
+  }
+}

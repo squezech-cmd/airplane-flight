@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jetpack:block/mitten_block"
+    },
+    "facing=east": {
+      "model": "jetpack:block/mitten_block",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jetpack:block/mitten_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jetpack:block/mitten_block",
+      "y": 270
+    }
+  }
+}

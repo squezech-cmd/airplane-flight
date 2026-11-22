@@ -64,14 +64,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jetpack-1.20.1
-          path: jetpack-mod/build/libs/jetpack-2.1.1.jar
+          path: jetpack-mod/build/libs/jetpack-3.0.0.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: jetpack-v2.1.1
-          name: 'Jetpack v2.1.1 (Minecraft 1.20.1 Forge)'
+          tag_name: jetpack-v3.0.0
+          name: 'Jetpack v3.0.0 (Minecraft 1.20.1 Forge)'
           body: |
             ## Jetpack 2.1.1 — Winter Wonderland (Minecraft 1.20.1 Forge)
 
@@ -117,8 +117,8 @@ jobs:
             ### Install
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
             2. **Delete any older jetpack jar** from the mods folder first
-            3. Put `jetpack-2.1.1.jar` into `mods`
+            3. Put `jetpack-3.0.0.jar` into `mods`
             4. Launch the game — hold SPACE to fly, and enjoy the snow
-          files: jetpack-mod/build/libs/jetpack-2.1.1.jar
+          files: jetpack-mod/build/libs/jetpack-3.0.0.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

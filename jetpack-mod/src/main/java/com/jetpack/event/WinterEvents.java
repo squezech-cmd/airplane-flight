@@ -40,7 +40,7 @@ public final class WinterEvents {
         if (!(player.level() instanceof ServerLevel level)) {
             return;
         }
-        if (player.isSpectator()) {
+        if (player.isSpectator() || !com.jetpack.event.WinterConfig.snowfallEnabled) {
             return;
         }
 

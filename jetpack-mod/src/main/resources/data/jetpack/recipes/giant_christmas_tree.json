@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " T ",
+    "TTT",
+    "TTT"
+  ],
+  "key": {
+    "T": {
+      "item": "jetpack:christmas_tree"
+    }
+  },
+  "result": {
+    "item": "jetpack:giant_christmas_tree",
+    "count": 1
+  }
+}
