@@ -32,14 +32,9 @@ import org.jetbrains.annotations.Nullable;
 public class BigChristmasTreeBlock extends Block {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
-    private static final VoxelShape TRUNK = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 16.0D, 10.0D);
-    private static final VoxelShape FOLIAGE = Shapes.or(
-            Block.box(1.0D, 1.0D, 1.0D, 15.0D, 6.0D, 15.0D),
-            Block.box(2.5D, 5.0D, 2.5D, 13.5D, 11.0D, 13.5D),
-            Block.box(4.0D, 10.0D, 4.0D, 12.0D, 16.0D, 12.0D));
-    private static final VoxelShape UPPER_FOLIAGE = Shapes.or(
-            Block.box(3.0D, 0.0D, 3.0D, 13.0D, 7.0D, 13.0D),
-            Block.box(4.4D, 5.0D, 4.4D, 11.6D, 11.0D, 11.6D));
+    private static final VoxelShape TRUNK = Block.box(7.3D, 0.0D, 7.3D, 8.7D, 16.0D, 8.7D);
+    private static final VoxelShape FOLIAGE = Block.box(0.2D, 1.6D, 0.2D, 15.8D, 16.0D, 15.8D);
+    private static final VoxelShape UPPER_FOLIAGE = Block.box(0.9D, 0.0D, 0.9D, 15.1D, 15.4D, 15.1D);
 
     public BigChristmasTreeBlock(Properties properties) {
         super(properties);

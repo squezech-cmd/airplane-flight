@@ -34,20 +34,16 @@ public class GiantChristmasTreeBlock extends Block {
     /** 0 = bottom, 1 = middle, 2 = top. */
     public static final IntegerProperty PART = IntegerProperty.create("part", 0, 2);
 
-    private static final VoxelShape TRUNK = Block.box(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);
+    private static final VoxelShape TRUNK = Block.box(7.3D, 0.0D, 7.3D, 8.7D, 16.0D, 8.7D);
     private static final VoxelShape LOWER_FOLIAGE = Shapes.or(
-            Block.box(0.5D, 2.0D, 0.5D, 15.5D, 9.0D, 15.5D),
-            Block.box(1.3D, 7.0D, 1.3D, 14.7D, 14.0D, 14.7D),
-            Block.box(2.1D, 12.0D, 2.1D, 13.9D, 16.0D, 13.9D));
+            Block.box(0.2D, 1.6D, 0.2D, 15.8D, 8.0D, 15.8D),
+            Block.box(3.2D, 8.0D, 3.2D, 12.8D, 16.0D, 12.8D));
     private static final VoxelShape MIDDLE_FOLIAGE = Shapes.or(
-            Block.box(2.1D, 0.0D, 2.1D, 13.9D, 3.0D, 13.9D),
-            Block.box(2.9D, 1.0D, 2.9D, 13.1D, 8.0D, 13.1D),
-            Block.box(3.7D, 6.0D, 3.7D, 12.3D, 13.0D, 12.3D),
-            Block.box(4.5D, 11.0D, 4.5D, 11.5D, 16.0D, 11.5D));
+            Block.box(1.0D, 0.0D, 1.0D, 15.0D, 7.0D, 15.0D),
+            Block.box(4.0D, 7.0D, 4.0D, 12.0D, 16.0D, 12.0D));
     private static final VoxelShape TOP_FOLIAGE = Shapes.or(
-            Block.box(4.5D, 0.0D, 4.5D, 11.5D, 5.0D, 11.5D),
-            Block.box(5.3D, 5.0D, 5.3D, 10.7D, 10.0D, 10.7D),
-            Block.box(6.1D, 10.0D, 6.1D, 9.9D, 13.5D, 9.9D));
+            Block.box(2.4D, 0.0D, 2.4D, 13.6D, 7.0D, 13.6D),
+            Block.box(5.0D, 7.0D, 5.0D, 11.0D, 16.0D, 11.0D));
 
     public GiantChristmasTreeBlock(Properties properties) {
         super(properties);
@@ -139,8 +135,9 @@ public class GiantChristmasTreeBlock extends Block {
                 for (int i = 1; i <= 2; i++) {
                     BlockPos above = pos.above(i);
                     if (level.getBlockState(above).is(this)) {
+                        BlockState old = level.getBlockState(above);
                         level.setBlock(above, Blocks.AIR.defaultBlockState(), 35);
-                        level.levelEvent(player, 2001, above, Block.getId(level.getBlockState(above)));
+                        level.levelEvent(player, 2001, above, Block.getId(old));
                     }
                 }
             }

@@ -95,27 +95,27 @@ public final class ModRegistry {
     // ---- decorative furniture: these used to be inventory-only items ----
 
     public static final RegistryObject<Block> TOY_TRAIN_BLOCK = registerDecor("toy_train_block",
-            DecorBlock.box(0, 0, 2, 16, 9, 14), DecorBlock.Flavour.SPARKLE, 0);
+            DecorBlock.box(0, 0, 2.6, 16, 8.2, 13.4), DecorBlock.Flavour.SPARKLE, 0);
     public static final RegistryObject<Block> DRUM_BLOCK = registerDecor("drum_block",
-            DecorBlock.box(3, 0, 3, 13, 11, 13), DecorBlock.Flavour.NONE, 0);
+            DecorBlock.box(2.4, 0.9, 3.1, 13.6, 13.5, 12.9), DecorBlock.Flavour.NONE, 0);
     public static final RegistryObject<Block> ROCKING_HORSE_BLOCK = registerDecor("rocking_horse_block",
-            DecorBlock.box(1, 0, 3, 15, 13, 13), DecorBlock.Flavour.NONE, 0);
+            DecorBlock.box(1, 0.3, 4, 15.8, 15.8, 12), DecorBlock.Flavour.NONE, 0);
     public static final RegistryObject<Block> NUTCRACKER_BLOCK = registerDecor("nutcracker_block",
-            DecorBlock.box(3, 0, 4, 13, 16, 12), DecorBlock.Flavour.DUST, 3);
+            DecorBlock.box(3.6, 0, 4.6, 13, 16, 11.4), DecorBlock.Flavour.DUST, 3);
     public static final RegistryObject<Block> GINGERBREAD_MAN_BLOCK = registerDecor("gingerbread_man_block",
-            DecorBlock.box(3, 0, 5, 13, 15, 11), DecorBlock.Flavour.NONE, 0);
+            DecorBlock.box(0.5, 0.2, 5.2, 15.9, 15.05, 10.7), DecorBlock.Flavour.NONE, 0);
     public static final RegistryObject<Block> GINGERBREAD_HOUSE_BLOCK = registerDecor("gingerbread_house_block",
-            DecorBlock.box(1, 0, 2, 15, 14, 14), DecorBlock.Flavour.DUST, 4);
+            DecorBlock.box(0.6, 0, 1.4, 15.4, 12.9, 13.8), DecorBlock.Flavour.DUST, 4);
     public static final RegistryObject<Block> STOCKING_BLOCK = registerDecor("stocking_block",
-            DecorBlock.box(4, 0, 6, 12, 14, 11), DecorBlock.Flavour.NONE, 0);
+            DecorBlock.box(4.2, 0, 5, 15.2, 16, 11.8), DecorBlock.Flavour.NONE, 0);
     public static final RegistryObject<Block> MITTEN_BLOCK = registerDecor("mitten_block",
-            DecorBlock.box(4, 0, 6, 12, 12, 11), DecorBlock.Flavour.NONE, 0);
+            DecorBlock.box(4.4, 0, 4.6, 13.6, 15.2, 11.4), DecorBlock.Flavour.NONE, 0);
     public static final RegistryObject<Block> BELL_BLOCK = registerDecor("bell_block",
-            DecorBlock.box(5, 0, 5, 11, 9, 11), DecorBlock.Flavour.SPARKLE, 7);
+            DecorBlock.box(2.05, 0, 2.05, 13.95, 13, 13.95), DecorBlock.Flavour.SPARKLE, 7);
     public static final RegistryObject<Block> BAUBLE_PILE_BLOCK = registerDecor("bauble_pile_block",
-            DecorBlock.box(2, 0, 2, 14, 9, 14), DecorBlock.Flavour.GLITTER, 0);
+            DecorBlock.box(0.9, 0, 5.3, 14.3, 12.5, 14.9), DecorBlock.Flavour.GLITTER, 0);
     public static final RegistryObject<Block> CANDY_JAR_BLOCK = registerDecor("candy_jar_block",
-            DecorBlock.box(4, 0, 4, 12, 12, 12), DecorBlock.Flavour.SPARKLE, 0);
+            DecorBlock.box(3.5, 0, 3.3, 12.5, 13.6, 12.5), DecorBlock.Flavour.SPARKLE, 0);
 
     public static final RegistryObject<Block> GIFT_RED = registerBlock("gift_red",
             () -> new GiftBlock(BlockBehaviour.Properties.copy(Blocks.WHITE_WOOL)

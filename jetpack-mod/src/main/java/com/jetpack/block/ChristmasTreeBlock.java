@@ -13,8 +13,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * but only the trunk below is solid, so you can walk through the branches.
  */
 public class ChristmasTreeBlock extends Block {
-    private static final VoxelShape TRUNK = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 14.0D, 10.0D);
-    private static final VoxelShape FOLIAGE = Block.box(1.0D, 4.0D, 1.0D, 15.0D, 16.0D, 15.0D);
+    private static final VoxelShape TRUNK = Block.box(7.35D, 0.0D, 7.35D, 8.65D, 16.0D, 8.65D);
+    private static final VoxelShape FOLIAGE = Block.box(0.6D, 1.6D, 0.6D, 15.4D, 16.0D, 15.4D);
 
     public ChristmasTreeBlock(Properties properties) {
         super(properties);
