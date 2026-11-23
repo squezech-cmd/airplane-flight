@@ -109,33 +109,29 @@ public class NpcEditorScreen extends Screen {
                 })
                 .bounds(left + 230, top + 68, 70, 20).build());
 
-        this.behaviourButton = Button.builder(behaviourLabel(), button -> {
+        addRenderableWidget(Button.builder(behaviourLabel(), button -> {
                     this.behaviour = this.behaviour.next();
                     button.setMessage(behaviourLabel());
                 })
-                .bounds(left, top + 102, 146, 20).build();
-        addRenderableWidget(this.behaviourButton);
+                .bounds(left, top + 102, 146, 20).build());
 
-        this.invulnerableButton = Button.builder(invulnerableLabel(), button -> {
+        addRenderableWidget(Button.builder(invulnerableLabel(), button -> {
                     this.invulnerable = !this.invulnerable;
                     button.setMessage(invulnerableLabel());
                 })
-                .bounds(left + 154, top + 102, 146, 20).build();
-        addRenderableWidget(this.invulnerableButton);
+                .bounds(left + 154, top + 102, 146, 20).build());
 
-        this.scaleButton = Button.builder(scaleLabel(), button -> {
+        addRenderableWidget(Button.builder(scaleLabel(), button -> {
                     this.scalePercent = this.scalePercent >= 200 ? 50 : this.scalePercent + 10;
                     button.setMessage(scaleLabel());
                 })
-                .bounds(left, top + 126, 146, 20).build();
-        addRenderableWidget(this.scaleButton);
+                .bounds(left, top + 126, 146, 20).build());
 
-        this.hostileButton = Button.builder(hostileLabel(), button -> {
+        addRenderableWidget(Button.builder(hostileLabel(), button -> {
                     this.hostile = !this.hostile;
                     button.setMessage(hostileLabel());
                 })
-                .bounds(left + 154, top + 126, 146, 20).build();
-        addRenderableWidget(this.hostileButton);
+                .bounds(left + 154, top + 126, 146, 20).build());
 
         addRenderableWidget(Button.builder(Component.literal("Give held item"), button -> {
                     Minecraft minecraft = Minecraft.getInstance();
