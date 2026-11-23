@@ -30,6 +30,22 @@ Turn on **Hostile** and it will also attack players and monsters.
 
 Commands target the nearest NPC within 12 blocks, except `list` and `removeall`.
 
+## Server settings
+
+`config/customnpcs-common.toml` is created on first launch:
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `allowEditing` | `true` | whether players may open the editor at all |
+| `ownerOnlyEditing` | `true` | only the player who placed an NPC may edit it |
+| `defaultScale` | `100` | size of newly placed NPCs, 50–200% |
+| `defaultInvulnerable` | `true` | new NPCs start out unable to be hurt |
+| `maxNpcsPerPlayer` | `50` | cap per player, `0` = unlimited |
+| `wandRange` | `8` | reach of the wand, in blocks |
+
+Operators always bypass the first two: a server owner should never be locked
+out of their own world by their own config.
+
 ## Skins
 
 The skin field accepts `steve`, `alex`, or any texture path such as
@@ -41,7 +57,7 @@ skins and NPCs will use them.
 ```bash
 cd jetpack-mod
 gradle build
-# jar in build/libs/customnpcs-1.0.1.jar
+# jar in build/libs/customnpcs-1.1.0.jar
 ```
 
 Requires JDK 17. The directory is still called `jetpack-mod` because that is the
@@ -51,5 +67,5 @@ Custom NPCs.
 ## Install
 
 1. Forge 47.2.0+ for Minecraft 1.20.1.
-2. Drop `customnpcs-1.0.1.jar` into `mods`.
+2. Drop `customnpcs-1.1.0.jar` into `mods`.
 3. Remove any older `jetpack-*.jar` — this mod replaces it.

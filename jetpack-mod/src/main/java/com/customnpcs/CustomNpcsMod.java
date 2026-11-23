@@ -29,6 +29,7 @@ public class CustomNpcsMod {
         ModItems.register(bus);
         bus.addListener(this::commonSetup);
         NetworkHandler.register();
+        NpcConfig.register();
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

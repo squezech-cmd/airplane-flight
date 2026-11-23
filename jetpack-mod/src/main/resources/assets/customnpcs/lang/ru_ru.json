@@ -7,5 +7,6 @@
   "customnpcs.gui.dialogue": "Реплика при обращении",
   "customnpcs.gui.save": "Сохранить",
   "customnpcs.gui.cancel": "Отмена",
-  "customnpcs.command.usage": "Использование: /npc spawn <имя> | /npc list | /npc behaviour guard"
+  "customnpcs.command.usage": "Custom NPCs — как пользоваться",
+  "customnpcs.gui.skin": "Скин"
 }

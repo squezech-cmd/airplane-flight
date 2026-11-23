@@ -64,16 +64,31 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: customnpcs-1.20.1
-          path: jetpack-mod/build/libs/customnpcs-1.0.1.jar
+          path: jetpack-mod/build/libs/customnpcs-1.1.0.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: customnpcs-v1.0.1
-          name: 'Custom NPCs v1.0.1 (Minecraft 1.20.1 Forge)'
+          tag_name: customnpcs-v1.1.0
+          name: 'Custom NPCs v1.1.0 (Minecraft 1.20.1 Forge)'
           body: |
-            ## Custom NPCs 1.0.1
+            ## Custom NPCs 1.1.0
+
+            Setup is now inside the game instead of in the release notes.
+
+            - **`/npc help`** prints the whole flow in chat, and bare `/npc`
+              does the same, so a player who installs this and reads nothing
+              can still place and configure an NPC.
+            - **The editor has a skin field** with Steve and Alex shortcuts.
+              Type any texture path, such as
+              `customnpcs:textures/entity/guard.png`, and a resource pack can
+              supply custom 64x64 skins.
+            - **Help text under the editor** explains each setting in one line.
+            - **`config/customnpcs-common.toml`** for server owners:
+              `allowEditing`, `ownerOnlyEditing`, `defaultScale`,
+              `defaultInvulnerable`, `maxNpcsPerPlayer`, `wandRange`.
+              Operators always bypass the editing restrictions.
 
             A patch release for three bugs that only appeared once the mod was
             actually loaded: NPC attributes were registered on the wrong event
@@ -131,8 +146,8 @@ jobs:
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
             2. **Delete any older jetpack jar** from the mods folder — this
                replaces it entirely
-            3. Put `customnpcs-1.0.1.jar` into `mods`
+            3. Put `customnpcs-1.1.0.jar` into `mods`
             4. Launch, craft the spawner, right-click the ground
-          files: jetpack-mod/build/libs/customnpcs-1.0.1.jar
+          files: jetpack-mod/build/libs/customnpcs-1.1.0.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

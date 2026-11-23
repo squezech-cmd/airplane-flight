@@ -7,5 +7,6 @@
   "customnpcs.gui.dialogue": "Dialogue when spoken to",
   "customnpcs.gui.save": "Save",
   "customnpcs.gui.cancel": "Cancel",
-  "customnpcs.command.usage": "Usage: /npc spawn <name> | /npc list | /npc behaviour guard"
+  "customnpcs.command.usage": "Custom NPCs — how to use",
+  "customnpcs.gui.skin": "Skin"
 }

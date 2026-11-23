@@ -49,6 +49,10 @@ public final class NpcCommands {
                 .then(Commands.literal("spawn")
                         .then(Commands.argument("name", StringArgumentType.greedyString())
                                 .executes(context -> spawn(context, StringArgumentType.getString(context, "name")))))
+                .then(Commands.literal("help").executes(context -> {
+                    NpcHelp.send(context.getSource());
+                    return 1;
+                }))
                 .then(Commands.literal("list").executes(NpcCommands::list))
                 .then(Commands.literal("remove").executes(context -> removeNearest(context, false)))
                 .then(Commands.literal("removeall").executes(context -> removeNearest(context, true)))
@@ -72,8 +76,10 @@ public final class NpcCommands {
                 .then(Commands.literal("invulnerable")
                         .then(Commands.literal("on").executes(context -> setInvulnerable(context, true)))
                         .then(Commands.literal("off").executes(context -> setInvulnerable(context, false))))
-                .executes(context -> reply(context.getSource(),
-                        "Usage: /npc spawn <name> | /npc list | /npc behaviour guard", ChatFormatting.GRAY)));
+                .executes(context -> {
+                    NpcHelp.send(context.getSource());
+                    return 1;
+                }));
     }
 
     // --------------------------------------------------------------- spawn

@@ -27,18 +27,20 @@ public class UpdateNpcPacket {
     private final int entityId;
     private final String name;
     private final String dialogue;
+    private final String skin;
     private final int behaviour;
     private final int scalePercent;
     private final int flags;
     private final ItemStack mainHand;
     private final ItemStack head;
 
-    public UpdateNpcPacket(int entityId, String name, String dialogue, NpcBehaviour behaviour,
-                           int scalePercent, boolean invulnerable, boolean hostile,
-                           ItemStack mainHand, ItemStack head) {
+    public UpdateNpcPacket(int entityId, String name, String dialogue, String skin,
+                           NpcBehaviour behaviour, int scalePercent, boolean invulnerable,
+                           boolean hostile, ItemStack mainHand, ItemStack head) {
         this.entityId = entityId;
         this.name = name;
         this.dialogue = dialogue;
+        this.skin = skin;
         this.behaviour = behaviour.ordinal();
         this.scalePercent = scalePercent;
         this.flags = (invulnerable ? FLAG_INVULNERABLE : 0) | (hostile ? FLAG_HOSTILE : 0);
@@ -50,6 +52,7 @@ public class UpdateNpcPacket {
         this.entityId = buf.readVarInt();
         this.name = buf.readUtf(32);
         this.dialogue = buf.readUtf(256);
+        this.skin = buf.readUtf(96);
         this.behaviour = buf.readVarInt();
         this.scalePercent = buf.readVarInt();
         this.flags = buf.readVarInt();
@@ -64,6 +67,7 @@ public class UpdateNpcPacket {
         buf.writeVarInt(this.entityId);
         buf.writeUtf(this.name, 32);
         buf.writeUtf(this.dialogue, 256);
+        buf.writeUtf(this.skin, 96);
         buf.writeVarInt(this.behaviour);
         buf.writeVarInt(this.scalePercent);
         buf.writeVarInt(this.flags);
@@ -93,6 +97,7 @@ public class UpdateNpcPacket {
             }
             npc.setCustomNameDirect(this.name.isBlank() ? "NPC" : this.name);
             npc.setDialogue(this.dialogue);
+            npc.setSkin(this.skin);
             npc.setBehaviour(NpcBehaviour.byOrdinal(this.behaviour));
             npc.setScalePercent(Math.max(50, Math.min(200, this.scalePercent)));
             npc.setInvulnerableNpc((this.flags & FLAG_INVULNERABLE) != 0);

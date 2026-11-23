@@ -59,7 +59,7 @@ public class NpcWandItem extends Item {
         if (player.level().isClientSide) {
             return InteractionResult.SUCCESS;
         }
-        if (!npc.isOwnerOrOp(player)) {
+        if (!mayEdit(player, npc)) {
             player.sendSystemMessage(Component.literal("That NPC is not yours to edit.")
                     .withStyle(ChatFormatting.RED));
             return InteractionResult.CONSUME;
@@ -73,6 +73,27 @@ public class NpcWandItem extends Item {
                     new OpenEditorPacket(npc.getId()));
         }
         return InteractionResult.CONSUME;
+    }
+
+    /**
+     * Checks the server settings before an NPC can be opened or copied.
+     *
+     * <p>Operators override both switches: a server owner should never be
+     * locked out of their own world by their own config file.
+     */
+    private static boolean mayEdit(Player player, CustomNpc npc) {
+        if (player.hasPermissions(2)) {
+            return true;
+        }
+        if (!com.customnpcs.NpcConfig.getBoolean(com.customnpcs.NpcConfig.ALLOW_EDITING)) {
+            player.sendSystemMessage(Component.literal("Editing NPCs is disabled on this server.")
+                    .withStyle(ChatFormatting.RED));
+            return false;
+        }
+        if (!com.customnpcs.NpcConfig.getBoolean(com.customnpcs.NpcConfig.OWNER_ONLY_EDITING)) {
+            return true;
+        }
+        return npc.isOwnerOrOp(player);
     }
 
     @Override
