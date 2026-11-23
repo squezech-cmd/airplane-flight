@@ -64,16 +64,21 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: customnpcs-1.20.1
-          path: jetpack-mod/build/libs/customnpcs-1.1.0.jar
+          path: jetpack-mod/build/libs/customnpcs-1.1.1.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: customnpcs-v1.1.0
-          name: 'Custom NPCs v1.1.0 (Minecraft 1.20.1 Forge)'
+          tag_name: customnpcs-v1.1.1
+          name: 'Custom NPCs v1.1.1 (Minecraft 1.20.1 Forge)'
           body: |
-            ## Custom NPCs 1.1.0
+            ## Custom NPCs 1.1.1
+
+            `/npc help` and `/npc list` are open to every player now. Before, the
+            whole command was operator-only, so the help text promised by the
+            previous release was unreachable for ordinary players. Everything
+            that changes the world still requires permission level 2.
 
             Setup is now inside the game instead of in the release notes.
 
@@ -146,8 +151,8 @@ jobs:
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
             2. **Delete any older jetpack jar** from the mods folder — this
                replaces it entirely
-            3. Put `customnpcs-1.1.0.jar` into `mods`
+            3. Put `customnpcs-1.1.1.jar` into `mods`
             4. Launch, craft the spawner, right-click the ground
-          files: jetpack-mod/build/libs/customnpcs-1.1.0.jar
+          files: jetpack-mod/build/libs/customnpcs-1.1.1.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

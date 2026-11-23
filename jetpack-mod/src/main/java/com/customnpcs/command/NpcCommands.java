@@ -40,13 +40,17 @@ import java.util.List;
 public final class NpcCommands {
     private static final double NEAREST_RADIUS = 12.0D;
 
+    /** Only operators may change the world; reading is open to everyone. */
+    private static final java.util.function.Predicate<CommandSourceStack> OP =
+            source -> source.hasPermission(2);
+
     private NpcCommands() {
     }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("npc")
-                .requires(source -> source.hasPermission(2))
                 .then(Commands.literal("spawn")
+                        .requires(OP)
                         .then(Commands.argument("name", StringArgumentType.greedyString())
                                 .executes(context -> spawn(context, StringArgumentType.getString(context, "name")))))
                 .then(Commands.literal("help").executes(context -> {
@@ -54,26 +58,26 @@ public final class NpcCommands {
                     return 1;
                 }))
                 .then(Commands.literal("list").executes(NpcCommands::list))
-                .then(Commands.literal("remove").executes(context -> removeNearest(context, false)))
-                .then(Commands.literal("removeall").executes(context -> removeNearest(context, true)))
-                .then(Commands.literal("behaviour")
+                .then(Commands.literal("remove").requires(OP).executes(context -> removeNearest(context, false)))
+                .then(Commands.literal("removeall").requires(OP).executes(context -> removeNearest(context, true)))
+                .then(Commands.literal("behaviour").requires(OP)
                         .then(Commands.literal("wander").executes(context -> setBehaviour(context, NpcBehaviour.WANDER)))
                         .then(Commands.literal("follow").executes(context -> setBehaviour(context, NpcBehaviour.FOLLOW)))
                         .then(Commands.literal("guard").executes(context -> setBehaviour(context, NpcBehaviour.GUARD))))
-                .then(Commands.literal("name")
+                .then(Commands.literal("name").requires(OP)
                         .then(Commands.argument("name", StringArgumentType.greedyString())
                                 .executes(context -> setName(context, StringArgumentType.getString(context, "name")))))
-                .then(Commands.literal("dialogue")
+                .then(Commands.literal("dialogue").requires(OP)
                         .then(Commands.argument("text", StringArgumentType.greedyString())
                                 .executes(context -> setDialogue(context, StringArgumentType.getString(context, "text")))))
-                .then(Commands.literal("scale")
+                .then(Commands.literal("scale").requires(OP)
                         .then(Commands.argument("percent", IntegerArgumentType.integer(50, 200))
                                 .executes(context -> setScale(context,
                                         IntegerArgumentType.getInteger(context, "percent")))))
-                .then(Commands.literal("hostile")
+                .then(Commands.literal("hostile").requires(OP)
                         .then(Commands.literal("on").executes(context -> setHostile(context, true)))
                         .then(Commands.literal("off").executes(context -> setHostile(context, false))))
-                .then(Commands.literal("invulnerable")
+                .then(Commands.literal("invulnerable").requires(OP)
                         .then(Commands.literal("on").executes(context -> setInvulnerable(context, true)))
                         .then(Commands.literal("off").executes(context -> setInvulnerable(context, false))))
                 .executes(context -> {
