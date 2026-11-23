@@ -160,6 +160,15 @@ public class CustomNpc extends PathfinderMob {
         }
     }
 
+    /** NPCs are only ever placed by a player, never by world generation. */
+    @Override
+    public boolean checkSpawnRules(net.minecraft.world.level.LevelAccessor level,
+                                   MobSpawnType spawnType) {
+        return spawnType == MobSpawnType.SPAWN_EGG
+                || spawnType == MobSpawnType.COMMAND
+                || spawnType == MobSpawnType.MOB_SUMMONED;
+    }
+
     @Override
     public boolean removeWhenFarAway(double distance) {
         return false; // NPCs are placed deliberately and must never despawn
@@ -218,9 +227,17 @@ public class CustomNpc extends PathfinderMob {
         return getName();
     }
 
-    /** Sets the displayed name directly, bypassing the vanilla custom name. */
+    /**
+     * Sets the displayed name.
+     *
+     * <p>Also mirrors it into the vanilla custom-name field: the name tag above
+     * an entity is only drawn when {@code hasCustomName()} is true, so keeping
+     * the two in sync is what actually makes the name visible in the world.
+     */
     public void setCustomNameDirect(String name) {
-        this.entityData.set(DATA_NAME, name == null ? "" : name);
+        String value = name == null ? "" : name;
+        this.entityData.set(DATA_NAME, value);
+        this.setCustomName(value.isBlank() ? null : Component.literal(value));
     }
 
     public String skin() {
@@ -369,7 +386,7 @@ public class CustomNpc extends PathfinderMob {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("NpcName")) {
-            this.entityData.set(DATA_NAME, tag.getString("NpcName"));
+            this.setCustomNameDirect(tag.getString("NpcName"));
         }
         if (tag.contains("Skin")) {
             this.entityData.set(DATA_SKIN, tag.getString("Skin"));

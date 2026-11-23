@@ -1,10 +1,8 @@
 package com.customnpcs;
 
-import com.customnpcs.event.ModEvents;
 import com.customnpcs.network.NetworkHandler;
 import com.customnpcs.registry.ModEntities;
 import com.customnpcs.registry.ModItems;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,8 +29,6 @@ public class CustomNpcsMod {
         ModItems.register(bus);
         bus.addListener(this::commonSetup);
         NetworkHandler.register();
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(ModEvents.class);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
