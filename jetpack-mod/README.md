@@ -41,7 +41,7 @@ skins and NPCs will use them.
 ```bash
 cd jetpack-mod
 gradle build
-# jar in build/libs/customnpcs-1.0.0.jar
+# jar in build/libs/customnpcs-1.0.1.jar
 ```
 
 Requires JDK 17. The directory is still called `jetpack-mod` because that is the
@@ -51,5 +51,5 @@ Custom NPCs.
 ## Install
 
 1. Forge 47.2.0+ for Minecraft 1.20.1.
-2. Drop `customnpcs-1.0.0.jar` into `mods`.
+2. Drop `customnpcs-1.0.1.jar` into `mods`.
 3. Remove any older `jetpack-*.jar` — this mod replaces it.

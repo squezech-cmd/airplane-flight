@@ -64,16 +64,21 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: customnpcs-1.20.1
-          path: jetpack-mod/build/libs/customnpcs-1.0.0.jar
+          path: jetpack-mod/build/libs/customnpcs-1.0.1.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: customnpcs-v1.0.0
-          name: 'Custom NPCs v1.0.0 (Minecraft 1.20.1 Forge)'
+          tag_name: customnpcs-v1.0.1
+          name: 'Custom NPCs v1.0.1 (Minecraft 1.20.1 Forge)'
           body: |
-            ## Custom NPCs 1.0.0
+            ## Custom NPCs 1.0.1
+
+            A patch release for three bugs that only appeared once the mod was
+            actually loaded: NPC attributes were registered on the wrong event
+            bus, names never appeared above NPCs, and NPCs could spawn on their
+            own. All three are fixed.
 
             Place custom characters in your world: give them a name, a skin, a
             voice line and a job, then leave them there. Built for **Minecraft
@@ -126,8 +131,8 @@ jobs:
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
             2. **Delete any older jetpack jar** from the mods folder — this
                replaces it entirely
-            3. Put `customnpcs-1.0.0.jar` into `mods`
+            3. Put `customnpcs-1.0.1.jar` into `mods`
             4. Launch, craft the spawner, right-click the ground
-          files: jetpack-mod/build/libs/customnpcs-1.0.0.jar
+          files: jetpack-mod/build/libs/customnpcs-1.0.1.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
