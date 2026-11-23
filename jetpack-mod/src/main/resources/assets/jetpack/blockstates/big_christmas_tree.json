@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "half=lower": { "model": "jetpack:block/big_christmas_tree_lower" },
-    "half=upper": { "model": "jetpack:block/big_christmas_tree_upper" }
-  }
-}

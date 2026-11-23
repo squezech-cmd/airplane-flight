@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GEG",
+    "EDE",
+    "GEG"
+  ],
+  "key": {
+    "G": { "item": "minecraft:gold_ingot" },
+    "E": { "item": "minecraft:ender_pearl" },
+    "D": { "item": "minecraft:diamond" }
+  },
+  "result": {
+    "item": "customnpcs:npc_spawner",
+    "count": 1
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "jetpack:block/fairy_lights" },
-    "facing=east":  { "model": "jetpack:block/fairy_lights", "y": 90 },
-    "facing=south": { "model": "jetpack:block/fairy_lights", "y": 180 },
-    "facing=west":  { "model": "jetpack:block/fairy_lights", "y": 270 }
-  }
-}

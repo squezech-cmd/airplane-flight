@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  S",
+    " A ",
+    "A  "
+  ],
+  "key": {
+    "S": { "item": "minecraft:amethyst_shard" },
+    "A": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "item": "customnpcs:npc_wand",
+    "count": 1
+  }
+}

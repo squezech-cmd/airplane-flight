@@ -1,4 +1,4 @@
-name: Build Jetpack Mod
+name: Build Custom NPCs Mod
 
 on:
   push:
@@ -44,7 +44,7 @@ jobs:
           code=$?
           tail -n 150 build-output.txt
           if [ $code -ne 0 ]; then
-            echo "::error::Jetpack build failed with exit code $code"
+            echo "::error::Custom NPCs build failed with exit code $code"
             grep -E "FAILURE|What went wrong|Could not|error:|Exception|Caused by|not found|Failed to|command not found" build-output.txt | head -15 | while IFS= read -r line; do
               esc=$(printf '%s' "$line" | sed 's/%/%25/g')
               echo "::error::$esc"
@@ -56,83 +56,78 @@ jobs:
         if: failure()
         run: |
           tail -n 200 jetpack-mod/build-output.txt > failure.txt 2>/dev/null || echo "No build output captured." > failure.txt
-          gh issue create --title "Jetpack build failed (run ${{ github.run_id }})" --body-file failure.txt || true
+          gh issue create --title "Custom NPCs build failed (run ${{ github.run_id }})" --body-file failure.txt || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: jetpack-1.20.1
-          path: jetpack-mod/build/libs/jetpack-3.1.0.jar
+          name: customnpcs-1.20.1
+          path: jetpack-mod/build/libs/customnpcs-1.0.0.jar
 
       - name: Publish GitHub Release
         if: github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: jetpack-v3.1.0
-          name: 'Jetpack v3.1.0 (Minecraft 1.20.1 Forge)'
+          tag_name: customnpcs-v1.0.0
+          name: 'Custom NPCs v1.0.0 (Minecraft 1.20.1 Forge)'
           body: |
-            ## Jetpack 3.1.0 — Voice Chat
+            ## Custom NPCs 1.0.0
 
-            Talk to the people around you, in game, with no extra mods and no
-            external libraries. Open the settings with the **Voice chat** button
-            in the pause menu, with **Left Alt**, or with `/voice`.
+            Place custom characters in your world: give them a name, a skin, a
+            voice line and a job, then leave them there. Built for **Minecraft
+            1.20.1 Forge**.
 
-            ### How it works
-            - **Push to talk** is the default: hold **V** while you play and
-              release to stop. Switch to an open microphone in the settings if
-              you prefer.
-            - **Proximity based** — your voice carries 32 blocks by default and
-              gets quieter with distance, so a group standing together sounds
-              like a group standing together.
-            - **Hearing range** is adjustable from 8 to 128 blocks, and everyone
-              sees who is close enough to talk to.
-            - **A live level meter** shows your microphone in real time, so you
-              can set the gain without guessing.
-            - **The HUD** shows when you are transmitting and who is speaking
-              near you.
-
-            ### Settings screen
-            | Setting | What it does |
-            | --- | --- |
-            | Voice chat on/off | master switch |
-            | Push to talk / open mic | how the microphone is triggered |
-            | Microphone on/off | manual override |
-            | Mic gain | 25% to 300%, with a meter next to it |
-            | Range | how far your voice carries, 8–128 blocks |
-            | Volume | how loud you hear everyone else |
-            | Noise gate | below this level nothing is sent, so breathing and fans stay private |
-            | Device | pick which microphone to use |
-            | Monitor | play your own microphone back so you can check how you sound |
-            | HUD | show or hide the corner indicator |
+            ### What you can do
+            - **Spawn an NPC** with the *NPC Spawner* item, or from the console
+              with `/npc spawn <name>`.
+            - **Edit it in game** by right-clicking with the *NPC Editor Wand*:
+              name, dialogue line, behaviour, scale, hostility, invulnerability,
+              and what it holds in its hand or wears on its head.
+            - **Clone a character** by sneak-right-clicking an NPC with the wand,
+              then right-clicking the ground to place copies — a whole crowd of
+              the same character, without retyping anything.
+            - **Let it live its life**: *Wander* walks around its home spot,
+              *Follow* stays with its owner and catches up if left behind,
+              *Guard* stands still and turns to watch players go by.
+            - **Talk to it**: right-click with an empty hand to get its dialogue
+              line in chat, prefixed with its name.
+            - **NPCs persist**: they never despawn, and name, skin, behaviour,
+              dialogue, scale and equipment are all saved in the world file and
+              synced to every player.
 
             ### Commands
             | Command | What it does |
             | --- | --- |
-            | `/voice` | open the settings screen |
-            | `/voice mute` / `/voice unmute` | stop or resume hearing everyone |
-            | `/voice range <8–128>` | set how far your voice carries |
-            | `/voice mode on/off` | operator: switch voice chat on the whole server |
-            | `/voice muteplayer <player>` | operator: mute one player |
+            | `/npc spawn <name>` | place an NPC where you stand |
+            | `/npc list` | every NPC within 128 blocks, with behaviour and scale |
+            | `/npc remove` | remove the nearest NPC |
+            | `/npc removeall` | remove every NPC within 256 blocks |
+            | `/npc behaviour wander\|follow\|guard` | set what the nearest NPC does |
+            | `/npc name <name>` | rename the nearest NPC |
+            | `/npc dialogue <text>` | set its line |
+            | `/npc scale <50–200>` | resize it |
+            | `/npc hostile on\|off` | make it fight players and monsters |
+            | `/npc invulnerable on\|off` | protect it from everything but editing |
 
-            ### Bandwidth
-            Microphone audio is decimated to 16 kHz wideband speech and compressed
-            with G.711 mu-law. That is **16 KB/s per speaker** instead of 96 KB/s of
-            raw audio, and the server only sends a voice frame to players inside the
-            speaker's range. The mod is pure Java: nothing to install, nothing to
-            download at runtime, and it still loads on a dedicated server.
+            ### Crafting
+            - **NPC Spawner** — gold ingots, ender pearls, a diamond in the middle.
+            - **NPC Editor Wand** — two sticks and an amethyst shard.
 
-            ### Also in this build
-            Everything from 3.0.0: the three rebuilt Christmas trees, the eleven
-            placeable decorations, the `/jetpack` blizzard commands, 24 blocks and
-            83 recipes.
+            Both are also in the Spawn Eggs creative tab.
+
+            ### Skins
+            The skin field takes `steve`, `alex`, or a full texture path such as
+            `customnpcs:textures/entity/guard.png`, so a resource pack can supply
+            your own 64×64 skins and the NPCs will wear them.
 
             ### Install
             1. Install **Forge 47.2.0+** for Minecraft 1.20.1
-            2. **Delete any older jetpack jar** from the mods folder
-            3. Put `jetpack-3.1.0.jar` into `mods`
-            4. Launch — hold SPACE to fly, hold V to talk
-          files: jetpack-mod/build/libs/jetpack-3.1.0.jar
+            2. **Delete any older jetpack jar** from the mods folder — this
+               replaces it entirely
+            3. Put `customnpcs-1.0.0.jar` into `mods`
+            4. Launch, craft the spawner, right-click the ground
+          files: jetpack-mod/build/libs/customnpcs-1.0.0.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

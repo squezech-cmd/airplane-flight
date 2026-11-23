@@ -6,7 +6,7 @@ license="MIT"
 modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
-description="A jetpack for Minecraft 1.20.1 with a full Christmas update (three tree sizes, eleven placeable decorations, presents, blizzard commands) and built-in proximity voice chat with push-to-talk."
+description="Custom NPCs for Minecraft 1.20.1: spawn fully customisable humanoid characters, give them names, skins, equipment, dialogue and behaviour, then let them walk, follow or stand guard."
 
 [[dependencies.${mod_id}]]
 modId="forge"

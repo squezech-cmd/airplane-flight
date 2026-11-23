@@ -1,0 +1,11 @@
+{
+  "item.customnpcs.npc_spawner": "NPC Spawner",
+  "item.customnpcs.npc_wand": "NPC Editor Wand",
+  "entity.customnpcs.custom_npc": "Custom NPC",
+  "customnpcs.gui.title": "Edit NPC",
+  "customnpcs.gui.name": "Name",
+  "customnpcs.gui.dialogue": "Dialogue when spoken to",
+  "customnpcs.gui.save": "Save",
+  "customnpcs.gui.cancel": "Cancel",
+  "customnpcs.command.usage": "Usage: /npc spawn <name> | /npc list | /npc behaviour guard"
+}

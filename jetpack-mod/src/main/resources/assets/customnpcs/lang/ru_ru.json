@@ -1,0 +1,11 @@
+{
+  "item.customnpcs.npc_spawner": "Создатель NPC",
+  "item.customnpcs.npc_wand": "Жезл редактора NPC",
+  "entity.customnpcs.custom_npc": "Пользовательский NPC",
+  "customnpcs.gui.title": "Редактор NPC",
+  "customnpcs.gui.name": "Имя",
+  "customnpcs.gui.dialogue": "Реплика при обращении",
+  "customnpcs.gui.save": "Сохранить",
+  "customnpcs.gui.cancel": "Отмена",
+  "customnpcs.command.usage": "Использование: /npc spawn <имя> | /npc list | /npc behaviour guard"
+}
